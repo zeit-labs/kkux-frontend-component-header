@@ -9,17 +9,18 @@ import { messages, genericMessages } from './messages';
 
 const AnonymousUserMenu = ({ t }) => {
   return (
-    <div className="kkux-logged-out-items">
+    <div className="kkux-logged-out">
+      {/* Register link — ghost text (matches marketing site: "Start your learning journey" + chevron) */}
       <Hyperlink
-        className="kkux-logged-out-link"
+        className="kkux-logged-out__link"
         destination={`${getConfig().LMS_BASE_URL}/register?next=${encodeURIComponent(global.location.href)}`}
       >
         {t(genericMessages.registerSentenceCase)}
       </Hyperlink>
+      {/* Sign In button — brand variant (pillar-500 green, matches marketing site primary button) */}
       <Button
         variant="brand"
         size="sm"
-        as="a"
         href={getLoginRedirectUrl(global.location.href)}
       >
         {t(genericMessages.signInSentenceCase)}

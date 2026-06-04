@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
-import { Icon } from '@openedx/paragon';
-import { Menu } from '@openedx/paragon';
 
 import AnonymousUserMenu from './AnonymousUserMenu';
 import AuthenticatedUserDropdown from './AuthenticatedUserDropdown';
@@ -32,26 +30,34 @@ const LearningHeader = ({
     return intl.formatMessage(msg, values);
   };
 
-  const logoUrl = getConfig().LOGO_URL;
-  const siteName = getConfig().SITE_NAME;
-
   return (
-    <header className="kkux-learning-header">
+    <header className="kkux-header">
       <a className="sr-only sr-only-focusable" href="#main-content">
         {t(messages.skipNavLink)}
       </a>
-      <div className="kkux-learning-header__inner">
-        <a href={`${getConfig().LMS_BASE_URL}/dashboard`} className="kkux-learning-header__logo">
-          <img src={logoUrl} alt={siteName} />
+      <div className="kkux-header__inner">
+        {/* Logo — matches PlatformLogo size-18 (72px) from marketing site */}
+        <a
+          href={`${getConfig().LMS_BASE_URL}/dashboard`}
+          className="kkux-header__logo"
+        >
+          <img src={getConfig().LOGO_URL} alt={getConfig().SITE_NAME} />
         </a>
-        <div className="kkux-learning-header__title">
+
+        {/* Course title (desktop only) */}
+        <div className="kkux-header__title">
           <CourseInfoSlot courseOrg={courseOrg} courseNumber={courseNumber} courseTitle={courseTitle} />
         </div>
-        <div className="kkux-learning-header__actions">
+
+        {/* Actions: help + user dropdown or login */}
+        <div className="kkux-header__actions">
           {showUserDropdown && authenticatedUser && (
             <>
               <LearningHelpSlot />
-              <AuthenticatedUserDropdown username={authenticatedUser.username} t={t} />
+              <AuthenticatedUserDropdown
+                username={authenticatedUser.username}
+                t={t}
+              />
             </>
           )}
           {showUserDropdown && !authenticatedUser && (

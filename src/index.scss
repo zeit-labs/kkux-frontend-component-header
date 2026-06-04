@@ -7,32 +7,28 @@ $rounded-pill: 50rem  !default;
 
 @import './Menu/menu.scss';
 @import './studio-header/StudioHeader.scss';
-
-.dropdown-item a {
-  text-decoration: none;
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 // ========================================
 // KKUx Learning Header (matches marketing site)
 // ========================================
 
-.kkux-learning-header {
+.kkux-header {
   position: sticky;
   top: 0;
   z-index: 1050;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  min-width: 0;
-  height: 4.5rem;   // 72px - matches marketing site logo height
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
 
   &__inner {
     display: flex;
     align-items: center;
-    height: 100%;
-    max-width: 80rem;
+    height: 4.5rem;    // matches marketing site header height
+    max-width: 80rem;   // max-w-7xl
     margin: 0 auto;
-    padding: 0 1.5rem;
-    gap: 1rem;
+    padding: 0 1.5rem;  // px-6
+    gap: 1.5rem;        // gap-6
   }
 
   &__logo {
@@ -41,7 +37,7 @@ $rounded-pill: 50rem  !default;
     align-items: center;
 
     img {
-      height: 3rem;      // 48px logo height inside the bar
+      height: 3rem;     // size-12 (48px) — Open edX logo inside header
       width: auto;
     }
   }
@@ -50,13 +46,15 @@ $rounded-pill: 50rem  !default;
     flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
+    display: flex;
+    align-items: center;
 
-    span {
+    span, a, div {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 0.875rem;
-      color: #555;
+      font-size: 0.8125rem;
+      color: #666;
     }
   }
 
@@ -66,71 +64,133 @@ $rounded-pill: 50rem  !default;
     align-items: center;
     gap: 0.75rem;
   }
+}
 
-  .kkux-user-dropdown {
-    .btn-outline-primary {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      height: 2.5rem;
-      padding: 0 0.75rem;
-      border: 1px solid color-mix(in oklch, #007359 40%, white);
-      color: #007359;
-      background: #fff;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
-      transition: background-color 0.15s;
+// ========================================
+// Authenticated user dropdown
+// (matches marketing site ProfileMenuCard)
+// ========================================
 
-      &:hover {
-        background: rgba(0, 115, 89, 0.05);
-      }
-    }
-
-    .dropdown-menu {
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 0.25rem 0;
-    }
-  }
-
-  .kkux-user-icon {
-    flex-shrink: 0;
-    color: #007359;
-  }
-
-  .kkux-username {
+.kkux-user-dropdown {
+  // Trigger button — ghost variant with user icon + name + chevron
+  .btn-outline-primary,
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    border: 1px solid #e5e7eb;
     color: #333;
+    background: #fff;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
+    font-weight: 400;
+    transition: background-color 0.15s;
+    cursor: pointer;
+
+    &:hover, &:focus {
+      background: #f5f5f5;
+      color: #333;
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    color: #999;
+  }
+
+  &__name {
     max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: #333;
   }
 
-  .kkux-chevron {
-    font-size: 0.625rem;
+  &__chevron {
+    flex-shrink: 0;
     color: #999;
-    margin-inline-start: 0.25rem;
   }
 
-  .kkux-logged-out-items {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+  // Dropdown menu — rounded, shadowed, bordered
+  &__menu {
+    border-radius: 0.5rem !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    padding: 0.25rem 0 !important;
+    min-width: 12rem !important;
+    font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
+
+    .dropdown-item {
+      font-size: 0.875rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.25rem;
+      margin: 0 0.25rem;
+      color: #333;
+      font-family: inherit;
+
+      &:hover {
+        background: #f3f4f6;
+      }
+    }
   }
 
-  .kkux-logged-out-link {
+  &__label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #999;
+    padding: 0.25rem 0.75rem;
+    text-transform: none;
+    font-family: inherit;
+  }
+}
+
+// ========================================
+// Logged out items — matches marketing site LoginButton
+// ========================================
+
+.kkux-logged-out {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: inherit;
+
+  &__link {
     font-size: 0.875rem;
     color: #007359;
     text-decoration: none;
+    font-family: inherit;
+    font-weight: 500;
 
     &:hover {
       text-decoration: underline;
+      color: #005c47;
+    }
+  }
+
+  .btn-brand {
+    font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
+    font-weight: 500;
+    background-color: #007359;
+    border-color: #007359;
+
+    &:hover {
+      background-color: #005c47;
+      border-color: #005c47;
     }
   }
 }
 
-// Legacy styles preserved below
+// ========================================
+// Legacy helpers — kept for backward compat
+// ========================================
+
+.dropdown-item a {
+  text-decoration: none;
+}
+
 .icon-button {
   display: inline-flex;
   line-height: 3rem;
@@ -187,7 +247,6 @@ $rounded-pill: 50rem  !default;
   }
 }
 
-
 .site-header-desktop {
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, .1);
   background: var(--pgn-color-white, $white);
@@ -210,6 +269,7 @@ $rounded-pill: 50rem  !default;
       height: 100%;
     }
   }
+
   .secondary-menu-container {
     .nav-link:hover,
     .nav-link:focus,
@@ -219,6 +279,7 @@ $rounded-pill: 50rem  !default;
       color: var(--pgn-color-active, $component-active-color);
     }
   }
+
   .main-nav {
     .nav-link {
       padding: 1.125rem var(--pgn-spacing-spacer-base, $spacer);
