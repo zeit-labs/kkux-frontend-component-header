@@ -74,35 +74,63 @@ $rounded-pill: 50rem  !default;
     }
   }
 
-  // Main nav: matches NavigationMenu row
-  // Ghost: NO border, hover bg-gray-100. Default: bg-[#007359] text-white.
+  // Main nav: matches marketing site NavigationMenu + Button h-13 px-4
   &__nav-main {
     flex: 1 1 auto;
     display: flex;
     align-items: center;
+    gap: 0;
+  }
 
-    a, .nav-link {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.5rem 0.75rem !important;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
-      font-weight: 500;
+  // Nav link: matches Button size="xl" ghost/default
+  &__nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.25rem !important;   // h-13 = 52px
+    padding: 0 1rem !important;    // px-4
+    border-radius: 0.375rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #333 !important;
+    text-decoration: none !important;
+    font-family: inherit;
+    cursor: pointer;
+    border: none !important;
+    background: transparent !important;
+    transition: background-color 0.15s;
+    letter-spacing: normal !important;
+    white-space: nowrap;
+
+    &:hover {
+      background: #f3f4f6 !important;
       color: #333 !important;
-      text-decoration: none !important;
-      font-family: inherit;
-      cursor: pointer;
-      border: none !important;
-      background: transparent !important;
-      transition: background-color 0.15s;
-      letter-spacing: normal !important;
-
-      &:hover { background: #f3f4f6 !important; color: #333 !important; }
-      &.active, &[aria-current] {
-        background: #007359 !important;
-        color: #fff !important;
-      }
     }
+
+    // Active: green bg + white text (variant="default")
+    &--active {
+      background: #007359 !important;
+      color: #fff !important;
+      &:hover { background: #005c47 !important; color: #fff !important; }
+    }
+
+    // Disabled: gray, no interaction
+    &--disabled {
+      color: #999 !important;
+      cursor: default; pointer-events: none;
+      &:hover { background: transparent !important; color: #999 !important; }
+    }
+
+    &--has-children { gap: 0.25rem; svg { width: 0.625rem; height: 0.625rem; color: #999; } }
+  }
+
+  // Active indicator: matches bg-growth-300/50 h-1.5 w-5/6 rounded-full
+  &__nav-active-bar {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    height: 0.375rem; width: 83.33%;
+    border-radius: 9999px;
+    background: rgba(3, 254, 150, 0.5);
   }
 
   // Right actions: matches NavbarActions flex items-center gap-2
