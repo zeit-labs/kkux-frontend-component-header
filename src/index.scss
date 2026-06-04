@@ -64,6 +64,71 @@ $rounded-pill: 50rem  !default;
     align-items: center;
     gap: 0.75rem;
   }
+
+  // Default header: main nav links (matches marketing site ghost buttons)
+  &__nav--main {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+
+    .nav-link, a {
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #333;
+      text-decoration: none;
+      transition: background-color 0.15s;
+      font-family: inherit;
+
+      &:hover { background: #f5f5f5; }
+      &.active, &.nav-link.active {
+        background: #007359;
+        color: #fff;
+      }
+    }
+  }
+
+  // Default header: right side (user menu + secondary nav)
+  &__nav--right {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  // Default header: user icon
+  &__user-icon { flex-shrink: 0; color: #999; }
+  &__username {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: inherit;
+    color: #333;
+  }
+  &__chevron { flex-shrink: 0; color: #999; }
+
+  // Default header: dropdown menu items
+  &__dropdown,
+  .menu-content {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    min-width: 12rem;
+    padding: 0.25rem 0;
+
+    .dropdown-item, a {
+      display: block;
+      font-size: 0.875rem;
+      padding: 0.5rem 0.75rem;
+      color: #333;
+      text-decoration: none;
+      font-family: inherit;
+      &:hover { background: #f3f4f6; }
+    }
+  }
 }
 
 // ========================================
