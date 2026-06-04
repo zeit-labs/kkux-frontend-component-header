@@ -10,7 +10,7 @@ $rounded-pill: 50rem  !default;
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 // ========================================
-// KKUx Learning Header (matches marketing site)
+// KKUx Header — matches marketing site navbar exactly
 // ========================================
 
 .kkux-header {
@@ -20,59 +20,40 @@ $rounded-pill: 50rem  !default;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
+  width: 100%;
+  flex-shrink: 0;
 
+  // Inner container — matches `container mx-auto` with 1.5rem padding
   &__inner {
     display: flex;
     align-items: center;
-    height: 4.5rem;    // matches marketing site header height
-    max-width: 80rem;   // max-w-7xl
+    height: 4.5rem;
+    max-width: 80rem;
     margin: 0 auto;
-    padding: 0 1.5rem;  // px-6
-    gap: 1.5rem;        // gap-6
+    padding: 0 1.5rem;
+    gap: 1rem;
   }
 
+  // Logo — matches PlatformLogo size-18 (72px)
   &__logo {
     flex-shrink: 0;
     display: flex;
     align-items: center;
-
-    img {
-      height: 3rem;     // size-12 (48px) — Open edX logo inside header
-      width: auto;
-    }
+    img { height: 3rem; width: auto; }
+    a { display: flex; align-items: center; }
   }
 
-  &__title {
-    flex: 1 1 auto;
-    min-width: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-
-    span, a, div {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 0.8125rem;
-      color: #666;
-    }
-  }
-
-  &__actions {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  // Default header: main nav links (matches marketing site ghost buttons)
-  &__nav--main {
+  // Main nav — matches marketing site NavigationMenu row
+  &__nav-main {
     flex: 1 1 auto;
     display: flex;
     align-items: center;
+    gap: 0;
 
-    .nav-link, a {
-      padding: 0.5rem 0.75rem;
+    a, .nav-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.375rem 0.75rem;
       border-radius: 0.375rem;
       font-size: 0.875rem;
       font-weight: 500;
@@ -80,24 +61,44 @@ $rounded-pill: 50rem  !default;
       text-decoration: none;
       transition: background-color 0.15s;
       font-family: inherit;
-
+      cursor: pointer;
       &:hover { background: #f5f5f5; }
-      &.active, &.nav-link.active {
+      &.active, &[aria-current="page"] {
         background: #007359;
         color: #fff;
       }
     }
   }
 
-  // Default header: right side (user menu + secondary nav)
-  &__nav--right {
+  // Right section — matches marketing site NavbarActions
+  &__nav-right {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  // Default header: user icon
+  // User button trigger — matches marketing site ghost Button variant
+  &__user-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #333;
+    border-radius: 0.375rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    height: auto;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+
   &__user-icon { flex-shrink: 0; color: #999; }
   &__username {
     max-width: 120px;
@@ -109,35 +110,59 @@ $rounded-pill: 50rem  !default;
   }
   &__chevron { flex-shrink: 0; color: #999; }
 
-  // Default header: dropdown menu items
-  &__dropdown,
-  .menu-content {
+  // Dropdown — matches marketing site DropdownMenuContent
+  &__dropdown {
+    position: absolute;
+    z-index: 2000;
     background: #fff;
     border-radius: 0.5rem;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
     border: 1px solid rgba(0, 0, 0, 0.08);
     min-width: 12rem;
-    padding: 0.25rem 0;
+    padding: 0.25rem;
+    margin-top: 0.25rem;
 
-    .dropdown-item, a {
-      display: block;
+    a, .dropdown-item {
+      display: flex;
+      align-items: center;
       font-size: 0.875rem;
-      padding: 0.5rem 0.75rem;
+      padding: 0.375rem 0.5rem;
       color: #333;
       text-decoration: none;
       font-family: inherit;
+      border-radius: 0.375rem;
       &:hover { background: #f3f4f6; }
     }
+  }
+
+  // Course title area (LearningHeader)
+  &__title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    span, a, div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.8125rem;
+      color: #666;
+    }
+  }
+
+  // Actions for LearningHeader (help + user)
+  &__actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
 }
 
 // ========================================
-// Authenticated user dropdown
-// (matches marketing site ProfileMenuCard)
+// Learning header: user dropdown (same style as DesktopHeader user-btn)
 // ========================================
 
 .kkux-user-dropdown {
-  // Trigger button — ghost variant with user icon + name + chevron
   .btn-outline-primary,
   .btn {
     display: flex;
@@ -154,18 +179,10 @@ $rounded-pill: 50rem  !default;
     font-weight: 400;
     transition: background-color 0.15s;
     cursor: pointer;
-
-    &:hover, &:focus {
-      background: #f5f5f5;
-      color: #333;
-    }
+    &:hover, &:focus { background: #f5f5f5; color: #333; }
   }
 
-  &__icon {
-    flex-shrink: 0;
-    color: #999;
-  }
-
+  &__icon { flex-shrink: 0; color: #999; }
   &__name {
     max-width: 120px;
     overflow: hidden;
@@ -173,32 +190,24 @@ $rounded-pill: 50rem  !default;
     white-space: nowrap;
     color: #333;
   }
+  &__chevron { flex-shrink: 0; color: #999; }
 
-  &__chevron {
-    flex-shrink: 0;
-    color: #999;
-  }
-
-  // Dropdown menu — rounded, shadowed, bordered
   &__menu {
     border-radius: 0.5rem !important;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12) !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    padding: 0.25rem 0 !important;
+    padding: 0.25rem !important;
     min-width: 12rem !important;
     font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
 
     .dropdown-item {
       font-size: 0.875rem;
-      padding: 0.375rem 0.75rem;
-      border-radius: 0.25rem;
-      margin: 0 0.25rem;
+      padding: 0.375rem 0.5rem;
+      border-radius: 0.375rem;
+      margin: 0;
       color: #333;
       font-family: inherit;
-
-      &:hover {
-        background: #f3f4f6;
-      }
+      &:hover { background: #f3f4f6; }
     }
   }
 
@@ -206,14 +215,13 @@ $rounded-pill: 50rem  !default;
     font-size: 0.75rem;
     font-weight: 500;
     color: #999;
-    padding: 0.25rem 0.75rem;
-    text-transform: none;
+    padding: 0.25rem 0.5rem;
     font-family: inherit;
   }
 }
 
 // ========================================
-// Logged out items — matches marketing site LoginButton
+// Logged out items
 // ========================================
 
 .kkux-logged-out {
@@ -226,13 +234,8 @@ $rounded-pill: 50rem  !default;
     font-size: 0.875rem;
     color: #007359;
     text-decoration: none;
-    font-family: inherit;
     font-weight: 500;
-
-    &:hover {
-      text-decoration: underline;
-      color: #005c47;
-    }
+    &:hover { text-decoration: underline; color: #005c47; }
   }
 
   .btn-brand {
@@ -240,21 +243,15 @@ $rounded-pill: 50rem  !default;
     font-weight: 500;
     background-color: #007359;
     border-color: #007359;
-
-    &:hover {
-      background-color: #005c47;
-      border-color: #005c47;
-    }
+    &:hover { background-color: #005c47; border-color: #005c47; }
   }
 }
 
 // ========================================
-// Legacy helpers — kept for backward compat
+// Legacy helpers
 // ========================================
 
-.dropdown-item a {
-  text-decoration: none;
-}
+.dropdown-item a { text-decoration: none; }
 
 .icon-button {
   display: inline-flex;
@@ -267,30 +264,20 @@ $rounded-pill: 50rem  !default;
   width: 3rem;
   padding: .75rem;
   justify-content: center;
-  align-items:center;
-
-  &:hover, &:focus {
-    background: rgba(0, 0, 0, .1);
-  }
+  align-items: center;
+  &:hover, &:focus { background: rgba(0, 0, 0, .1); }
 }
 
 .learning-header {
   min-width: 0;
-
   .course-title-lockup {
     min-width: 0;
-
     span {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       padding-bottom: calc(var(--pgn-spacing-spacer-base, $spacer)* 0.1);
     }
   }
-
-  .user-dropdown .btn {
-    height: 3rem;
-  }
+  .user-dropdown .btn { height: 3rem; }
 }
 
 .site-header-mobile,
@@ -301,82 +288,46 @@ $rounded-pill: 50rem  !default;
 
 .site-header-mobile {
   height: 3rem;
-
-  .nav-link {
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  img {
-    height: 1.5rem;
-  }
+  .nav-link { text-decoration: none; cursor: pointer; }
+  img { height: 1.5rem; }
 }
 
 .site-header-desktop {
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, .1);
   background: var(--pgn-color-white, $white);
-
-  .nav-link {
-    text-decoration: none;
-  }
-
+  .nav-link { text-decoration: none; }
   .logo {
-    display: block;
-    box-sizing: content-box;
-    position: relative;
-    top: -.05em;
+    display: block; box-sizing: content-box; position: relative; top: -.05em;
     height: 1.75rem;
     padding: var(--pgn-spacing-spacer-base, $spacer) 0;
     margin-right: var(--pgn-spacing-spacer-base, $spacer);
-
-    img {
-      display: block;
-      height: 100%;
-    }
+    img { display: block; height: 100%; }
   }
-
   .secondary-menu-container {
-    .nav-link:hover,
-    .nav-link:focus,
-    .nav-link.active,
-    .expanded .nav-link {
+    .nav-link:hover, .nav-link:focus, .nav-link.active, .expanded .nav-link {
       background: var(--pgn-color-bg-active, $component-active-bg);
       color: var(--pgn-color-active, $component-active-color);
     }
   }
-
   .main-nav {
     .nav-link {
       padding: 1.125rem var(--pgn-spacing-spacer-base, $spacer);
-      text-decoration: none;
-      font-weight: 500;
-      letter-spacing: .01em;
+      text-decoration: none; font-weight: 500; letter-spacing: .01em;
     }
-
-    .nav-link:hover,
-    .nav-link:focus,
-    .nav-link.active,
-    .expanded .nav-link {
+    .nav-link:hover, .nav-link:focus, .nav-link.active, .expanded .nav-link {
       background: var(--pgn-color-bg-active, $component-active-bg);
       color: var(--pgn-color-active, $component-active-color);
     }
-
     .menu {
       position: static;
-
       .menu-content {
         border-top: solid 2px var(--pgn-color-bg-active);
-        left: 0;
-        right: 0;
+        left: 0; right: 0;
         box-shadow: var(--pgn-elevation-box-shadow-down-1, 0 1px 2px rgba(0,0,0,.25));
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;
         padding: var(--pgn-spacing-spacer-base, $spacer);
       }
     }
   }
-
-  .search-input {
-    border-radius: var(--pgn-size-rounded-pill, $rounded-pill);
-  }
+  .search-input { border-radius: var(--pgn-size-rounded-pill, $rounded-pill); }
 }
