@@ -1,30 +1,35 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { getConfig } from '@edx/frontend-platform';
 import { getLoginRedirectUrl } from '@edx/frontend-platform/auth';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
-import LearningLoggedOutItemsSlot from '../plugin-slots/LearningLoggedOutItemsSlot';
+import { Hyperlink, Button } from '@openedx/paragon';
 
-import genericMessages from '../generic/messages';
+import { messages, genericMessages } from './messages';
 
-const AnonymousUserMenu = ({ intl }) => {
-  const buttonsInfo = [
-    {
-      message: intl.formatMessage(genericMessages.registerSentenceCase),
-      href: `${getConfig().LMS_BASE_URL}/register?next=${encodeURIComponent(global.location.href)}`,
-    },
-    {
-      message: intl.formatMessage(genericMessages.signInSentenceCase),
-      href: getLoginRedirectUrl(global.location.href),
-      variant: 'primary',
-    },
-  ];
-
-  return <LearningLoggedOutItemsSlot buttonsInfo={buttonsInfo} />;
+const AnonymousUserMenu = ({ t }) => {
+  return (
+    <div className="kkux-logged-out-items">
+      <Hyperlink
+        className="kkux-logged-out-link"
+        destination={`${getConfig().LMS_BASE_URL}/register?next=${encodeURIComponent(global.location.href)}`}
+      >
+        {t(genericMessages.registerSentenceCase)}
+      </Hyperlink>
+      <Button
+        variant="brand"
+        size="sm"
+        as="a"
+        href={getLoginRedirectUrl(global.location.href)}
+      >
+        {t(genericMessages.signInSentenceCase)}
+      </Button>
+    </div>
+  );
 };
 
 AnonymousUserMenu.propTypes = {
-  intl: intlShape.isRequired,
+  t: PropTypes.func.isRequired,
 };
 
-export default injectIntl(AnonymousUserMenu);
+export default AnonymousUserMenu;

@@ -1,47 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { getConfig } from '@edx/frontend-platform';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { Dropdown } from '@openedx/paragon';
 
 import LearningUserMenuSlot from '../plugin-slots/LearningUserMenuSlot';
+import { messages } from './messages';
 
-import messages from './messages';
-
-const AuthenticatedUserDropdown = ({ intl, username }) => {
+const AuthenticatedUserDropdown = ({ t, username }) => {
   const dropdownItems = [
-    {
-      message: intl.formatMessage(messages.dashboard),
-      href: `${getConfig().LMS_BASE_URL}/dashboard`,
-    },
-    {
-      message: intl.formatMessage(messages.profile),
-      href: `${getConfig().ACCOUNT_PROFILE_URL}/u/${username}`,
-    },
-    {
-      message: intl.formatMessage(messages.account),
-      href: getConfig().ACCOUNT_SETTINGS_URL,
-    },
-    ...(getConfig().ORDER_HISTORY_URL ? [{
-      message: intl.formatMessage(messages.orderHistory),
-      href: getConfig().ORDER_HISTORY_URL,
-    }] : []),
-    {
-      message: intl.formatMessage(messages.signOut),
-      href: getConfig().LOGOUT_URL,
-    },
+    { message: t(messages.dashboard), href: `${getConfig().LMS_BASE_URL}/dashboard` },
+    { message: t(messages.profile), href: `${getConfig().ACCOUNT_PROFILE_URL}/u/${username}` },
+    { message: t(messages.account), href: getConfig().ACCOUNT_SETTINGS_URL },
+    ...(getConfig().ORDER_HISTORY_URL ? [{ message: t(messages.orderHistory), href: getConfig().ORDER_HISTORY_URL }] : []),
+    { message: t(messages.signOut), href: getConfig().LOGOUT_URL },
   ];
 
   return (
-    <Dropdown className="user-dropdown ml-3">
+    <Dropdown className="kkux-user-dropdown">
       <Dropdown.Toggle variant="outline-primary">
-        <FontAwesomeIcon icon={faUserCircle} className="d-md-none" size="lg" />
-        <span data-hj-suppress className="d-none d-md-inline">
-          {username}
-        </span>
+        <svg className="kkux-user-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor" />
+        </svg>
+        <span className="d-none d-md-inline kkux-username">{username}</span>
+        <span className="kkux-chevron" aria-hidden="true">&#9662;</span>
       </Dropdown.Toggle>
       <Dropdown.Menu className="dropdown-menu-right">
         <LearningUserMenuSlot items={dropdownItems} />
@@ -51,8 +32,8 @@ const AuthenticatedUserDropdown = ({ intl, username }) => {
 };
 
 AuthenticatedUserDropdown.propTypes = {
-  intl: intlShape.isRequired,
+  t: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
 };
 
-export default injectIntl(AuthenticatedUserDropdown);
+export default AuthenticatedUserDropdown;
