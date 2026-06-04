@@ -9,325 +9,276 @@ $rounded-pill: 50rem  !default;
 @import './studio-header/StudioHeader.scss';
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
-// ========================================
-// KKUx Header — matches marketing site navbar exactly
-// ========================================
+// ============================================================
+// KKUx Header — matches kkux-marketing-site navbar pixel-for-pixel
+//
+// Marketing site mapping:
+//   bg-white px-6 sm:px-0  →  background + padding
+//   sticky top-0 z-50       →  position + z-index
+//   container mx-auto        →  max-w-7xl + mx-auto
+//   size-18                  →  72px (logo)
+//   Button size="xl"         →  h-13 (52px) nav items
+//   Button variant="ghost"   →  NO border, hover:bg-[#f3f4f6]
+//   Button variant="default" →  bg-[#007359] text-white
+//   DropdownMenuContent      →  rounded-lg p-1 shadow-md ring-1
+// ============================================================
 
 .kkux-header {
-  position: sticky;
+  position: sticky !important;
   top: 0;
   z-index: 1050;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
   width: 100%;
   flex-shrink: 0;
+  background: #fff !important;
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  padding: 0 1.5rem;
 
-  // Inner container — matches `container mx-auto` with 1.5rem padding
+  @media (min-width: 640px) { padding: 0; }
+
+  a, .nav-link { font-family: inherit; }
+
+  // Container: matches marketing site <div className="container mx-auto">
   &__inner {
     display: flex;
     align-items: center;
     height: 4.5rem;
-    max-width: 80rem;
+    max-width: 80rem;         // max-w-7xl
     margin: 0 auto;
-    padding: 0 1.5rem;
-    gap: 1rem;
+    gap: 1.5rem;              // gap-6
+    padding: 0;
   }
 
-  // Logo — matches PlatformLogo size-18 (72px)
+  // Logo: matches PlatformLogo size-18 (72px)
+  // Override Bootstrap .logo styles
   &__logo {
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    img { height: 3rem; width: auto; }
-    a { display: flex; align-items: center; }
+
+    a.logo, a {
+      display: flex !important;
+      align-items: center;
+      height: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      text-decoration: none;
+      box-sizing: content-box;
+      position: static;
+    }
+
+    img {
+      height: 3rem !important;  // 48px in 72px bar
+      width: auto !important;
+      display: block;
+    }
   }
 
-  // Main nav — matches marketing site NavigationMenu row
+  // Main nav: matches NavigationMenu row
+  // Ghost: NO border, hover bg-gray-100. Default: bg-[#007359] text-white.
   &__nav-main {
     flex: 1 1 auto;
     display: flex;
     align-items: center;
-    gap: 0;
 
     a, .nav-link {
       display: inline-flex;
       align-items: center;
-      padding: 0.375rem 0.75rem;
+      padding: 0.5rem 0.75rem !important;
       border-radius: 0.375rem;
       font-size: 0.875rem;
       font-weight: 500;
-      color: #333;
-      text-decoration: none;
-      transition: background-color 0.15s;
+      color: #333 !important;
+      text-decoration: none !important;
       font-family: inherit;
       cursor: pointer;
-      &:hover { background: #f5f5f5; }
-      &.active, &[aria-current="page"] {
-        background: #007359;
-        color: #fff;
+      border: none !important;
+      background: transparent !important;
+      transition: background-color 0.15s;
+      letter-spacing: normal !important;
+
+      &:hover { background: #f3f4f6 !important; color: #333 !important; }
+      &.active, &[aria-current] {
+        background: #007359 !important;
+        color: #fff !important;
       }
     }
   }
 
-  // Right section — matches marketing site NavbarActions
-  &__nav-right {
+  // Right actions: matches NavbarActions flex items-center gap-2
+  &__actions {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  // User button trigger — matches marketing site ghost Button variant
+  // User button: ghost variant — NO border, transparent bg, hover:bg-gray-100
   &__user-btn {
-    display: flex;
+    display: inline-flex !important;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.375rem 0.75rem;
-    border: 1px solid #e5e7eb;
-    background: #fff;
-    color: #333;
-    border-radius: 0.375rem;
+    padding: 0.375rem 0.75rem !important;
+    border: none !important;
+    background: transparent !important;
+    color: #333 !important;
+    border-radius: 0.375rem !important;
     font-family: inherit;
     font-size: 0.875rem;
+    font-weight: 400 !important;
     cursor: pointer;
     transition: background-color 0.15s;
-    height: auto;
+    height: auto !important;
+    box-shadow: none !important;
 
-    &:hover {
-      background: #f5f5f5;
-    }
+    &:hover { background: #f3f4f6 !important; color: #333 !important; }
+    svg { color: #999; }
   }
 
-  &__user-icon { flex-shrink: 0; color: #999; }
-  &__username {
+  &__user-name {
     max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: inherit;
     color: #333;
+    font-family: inherit;
   }
-  &__chevron { flex-shrink: 0; color: #999; }
 
-  // Dropdown — matches marketing site DropdownMenuContent
+  // Dropdown menu: matches DropdownMenuContent rounded-lg p-1 shadow-md ring-1
   &__dropdown {
-    position: absolute;
+    position: absolute !important;
     z-index: 2000;
-    background: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+    border: none !important;
     min-width: 12rem;
-    padding: 0.25rem;
+    padding: 0.25rem !important;
     margin-top: 0.25rem;
+    left: auto !important;
+    right: 0 !important;
 
     a, .dropdown-item {
       display: flex;
       align-items: center;
       font-size: 0.875rem;
-      padding: 0.375rem 0.5rem;
-      color: #333;
-      text-decoration: none;
+      padding: 0.375rem 0.5rem !important;
+      color: #333 !important;
+      text-decoration: none !important;
       font-family: inherit;
       border-radius: 0.375rem;
-      &:hover { background: #f3f4f6; }
+      margin: 0 !important;
+      background: transparent !important;
+      &:hover { background: #f3f4f6 !important; }
     }
   }
 
-  // Course title area (LearningHeader)
+  // Course title (LearningHeader only)
   &__title {
     flex: 1 1 auto;
-    min-width: 0;
-    overflow: hidden;
+    min-width: 0; overflow: hidden;
     span, a, div {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 0.8125rem;
-      color: #666;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-size: 0.8125rem; color: #666;
     }
-  }
-
-  // Actions for LearningHeader (help + user)
-  &__actions {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
   }
 }
 
-// ========================================
-// Learning header: user dropdown (same style as DesktopHeader user-btn)
-// ========================================
+// ============================================================
+// LearningHeader user dropdown (same design as DesktopHeader)
+// ============================================================
 
 .kkux-user-dropdown {
-  .btn-outline-primary,
-  .btn {
-    display: flex;
+  .btn-outline-primary, .btn {
+    display: flex !important;
     align-items: center;
     gap: 0.5rem;
-    height: 2.5rem;
-    padding: 0 0.75rem;
-    border: 1px solid #e5e7eb;
-    color: #333;
-    background: #fff;
-    border-radius: 0.375rem;
+    height: auto !important;
+    padding: 0.375rem 0.75rem !important;
+    border: 1px solid #e5e7eb !important;
+    color: #333 !important;
+    background: #fff !important;
+    border-radius: 0.375rem !important;
     font-size: 0.875rem;
-    font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
+    font-family: inherit;
     font-weight: 400;
-    transition: background-color 0.15s;
     cursor: pointer;
-    &:hover, &:focus { background: #f5f5f5; color: #333; }
+    &:hover { background: #f3f4f6 !important; }
+    svg { color: #999; }
   }
 
-  &__icon { flex-shrink: 0; color: #999; }
   &__name {
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     color: #333;
   }
-  &__chevron { flex-shrink: 0; color: #999; }
 
   &__menu {
     border-radius: 0.5rem !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+    border: none !important;
     padding: 0.25rem !important;
     min-width: 12rem !important;
-    font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
-
+    font-family: inherit;
     .dropdown-item {
-      font-size: 0.875rem;
-      padding: 0.375rem 0.5rem;
-      border-radius: 0.375rem;
-      margin: 0;
-      color: #333;
-      font-family: inherit;
-      &:hover { background: #f3f4f6; }
+      font-size: 0.875rem; padding: 0.375rem 0.5rem !important;
+      border-radius: 0.375rem; margin: 0; color: #333;
+      &:hover { background: #f3f4f6 !important; }
     }
   }
-
   &__label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: #999;
-    padding: 0.25rem 0.5rem;
-    font-family: inherit;
+    font-size: 0.75rem; font-weight: 500; color: #999;
+    padding: 0.25rem 0.5rem; font-family: inherit;
   }
 }
 
-// ========================================
-// Logged out items
-// ========================================
-
+// Logged out: Register link + Sign In brand button
 .kkux-logged-out {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: inherit;
-
+  display: flex; align-items: center; gap: 0.75rem; font-family: inherit;
   &__link {
-    font-size: 0.875rem;
-    color: #007359;
-    text-decoration: none;
-    font-weight: 500;
-    &:hover { text-decoration: underline; color: #005c47; }
+    font-size: 0.875rem; color: #007359; text-decoration: none; font-weight: 500;
+    &:hover { text-decoration: underline; }
   }
-
   .btn-brand {
-    font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
-    font-weight: 500;
-    background-color: #007359;
-    border-color: #007359;
+    font-family: inherit; font-weight: 500;
+    background-color: #007359; border-color: #007359;
     &:hover { background-color: #005c47; border-color: #005c47; }
   }
 }
 
-// ========================================
+// ============================================================
 // Legacy helpers
-// ========================================
-
+// ============================================================
 .dropdown-item a { text-decoration: none; }
-
 .icon-button {
-  display: inline-flex;
-  line-height: 3rem;
-  background: transparent;
-  vertical-align: middle;
-  text-align: center;
-  border: none;
-  height: 3rem;
-  width: 3rem;
-  padding: .75rem;
-  justify-content: center;
-  align-items: center;
-  &:hover, &:focus { background: rgba(0, 0, 0, .1); }
+  display: inline-flex; line-height: 3rem; background: transparent;
+  vertical-align: middle; text-align: center; border: none;
+  height: 3rem; width: 3rem; padding: .75rem;
+  justify-content: center; align-items: center;
+  &:hover, &:focus { background: rgba(0,0,0,.1); }
 }
-
 .learning-header {
   min-width: 0;
   .course-title-lockup {
     min-width: 0;
-    span {
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      padding-bottom: calc(var(--pgn-spacing-spacer-base, $spacer)* 0.1);
-    }
+    span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   }
   .user-dropdown .btn { height: 3rem; }
 }
-
-.site-header-mobile,
-.site-header-desktop {
-  position: relative;
-  z-index: 1000;
-}
-
+.site-header-mobile, .site-header-desktop { position: relative; z-index: 1000; }
 .site-header-mobile {
-  height: 3rem;
-  .nav-link { text-decoration: none; cursor: pointer; }
-  img { height: 1.5rem; }
+  height: 3rem; .nav-link { text-decoration: none; cursor: pointer; } img { height: 1.5rem; }
 }
-
 .site-header-desktop {
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, .1);
-  background: var(--pgn-color-white, $white);
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.1); background: var(--pgn-color-white,$white);
   .nav-link { text-decoration: none; }
-  .logo {
-    display: block; box-sizing: content-box; position: relative; top: -.05em;
-    height: 1.75rem;
-    padding: var(--pgn-spacing-spacer-base, $spacer) 0;
-    margin-right: var(--pgn-spacing-spacer-base, $spacer);
-    img { display: block; height: 100%; }
-  }
+  .logo { display: block; box-sizing: content-box; position: relative; top: -.05em; height: 1.75rem; padding: 1rem 0; margin-right: 1rem; img { display: block; height: 100%; } }
   .secondary-menu-container {
-    .nav-link:hover, .nav-link:focus, .nav-link.active, .expanded .nav-link {
-      background: var(--pgn-color-bg-active, $component-active-bg);
-      color: var(--pgn-color-active, $component-active-color);
-    }
+    .nav-link:hover, .nav-link:focus, .nav-link.active, .expanded .nav-link { background: $component-active-bg; color: $component-active-color; }
   }
   .main-nav {
-    .nav-link {
-      padding: 1.125rem var(--pgn-spacing-spacer-base, $spacer);
-      text-decoration: none; font-weight: 500; letter-spacing: .01em;
-    }
-    .nav-link:hover, .nav-link:focus, .nav-link.active, .expanded .nav-link {
-      background: var(--pgn-color-bg-active, $component-active-bg);
-      color: var(--pgn-color-active, $component-active-color);
-    }
-    .menu {
-      position: static;
-      .menu-content {
-        border-top: solid 2px var(--pgn-color-bg-active);
-        left: 0; right: 0;
-        box-shadow: var(--pgn-elevation-box-shadow-down-1, 0 1px 2px rgba(0,0,0,.25));
-        border-bottom-left-radius: 2px; border-bottom-right-radius: 2px;
-        padding: var(--pgn-spacing-spacer-base, $spacer);
-      }
-    }
+    .nav-link { padding: 1.125rem 1rem; text-decoration: none; font-weight: 500; letter-spacing: .01em; }
+    .nav-link:hover, .nav-link:focus, .nav-link.active, .expanded .nav-link { background: $component-active-bg; color: $component-active-color; }
+    .menu { position: static; .menu-content { border-top: solid 2px $component-active-bg; left: 0; right: 0; box-shadow: 0 1px 2px rgba(0,0,0,.25); border-radius: 0 0 2px 2px; padding: 1rem; } }
   }
-  .search-input { border-radius: var(--pgn-size-rounded-pill, $rounded-pill); }
+  .search-input { border-radius: $rounded-pill; }
 }
