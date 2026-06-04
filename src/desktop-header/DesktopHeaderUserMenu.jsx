@@ -2,22 +2,32 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DesktopHeaderUserMenu = ({ menu }) => menu.map((group, index) => (
-  // eslint-disable-next-line react/jsx-no-comment-textnodes,react/no-array-index-key
   <React.Fragment key={index}>
-    {group.heading && <div className="dropdown-header" role="heading" aria-level="1">{group.heading}</div>}
+    {group.heading && (
+      <div className="kkux-dropdown__label" role="heading" aria-level="1">
+        {group.heading}
+      </div>
+    )}
     {group.items.map(({
       type, content, href, disabled, isActive, onClick,
     }) => (
       <a
-        className={`dropdown-${type}${isActive ? ' active' : ''}${disabled ? ' disabled' : ''}`}
+        className={`kkux-dropdown__item${
+          disabled ? ' kkux-dropdown__item--disabled' : ''
+        }${
+          isActive ? ' kkux-dropdown__item--active' : ''
+        }`}
         key={`${type}-${content}`}
-        href={href}
-        onClick={onClick || null}
+        href={disabled ? undefined : href}
+        onClick={disabled ? (e) => e.preventDefault() : onClick}
+        aria-disabled={disabled || undefined}
       >
         {content}
       </a>
     ))}
-    {index < menu.length - 1 && <div className="dropdown-divider" role="separator" />}
+    {index < menu.length - 1 && (
+      <div className="kkux-dropdown__separator" role="separator" />
+    )}
   </React.Fragment>
 ));
 
