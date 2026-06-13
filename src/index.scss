@@ -487,6 +487,60 @@ $rounded-pill: 50rem  !default;
     padding: 0.5rem 1rem;
   }
 
+  // Toggle button: matches DropdownMenuTrigger ghost button in mobile drawer
+  &__user-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: #333;
+    font-family: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+
+    svg {
+      flex-shrink: 0;
+      color: #999;
+    }
+  }
+
+  &__username {
+    flex: 1;
+    text-align: start;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+  // Chevron: rotates 180deg when open (matches Marketing ChevronDown)
+  &__chevron {
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  // Collapsible menu: hidden by default, slides open
+  &__user-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+    padding: 0 0.5rem;
+
+    &--open {
+      max-height: 20rem;
+    }
+  }
+
   &__user-info {
     display: flex;
     align-items: center;
