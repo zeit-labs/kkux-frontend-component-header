@@ -90,15 +90,6 @@ const MobileHeader = ({
             {/* User section (top of drawer) */}
             {(userMenu.length > 0 || loggedOutItems.length > 0) && (
               <div className="kkux-mobile-drawer__user">
-                {loggedIn && username && (
-                  <div className="kkux-mobile-drawer__user-info">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <circle cx="12" cy="8" r="4" fill="#007359" />
-                      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="#007359" strokeWidth="2" fill="none" />
-                    </svg>
-                    <span className="kkux-mobile-drawer__username">{username}</span>
-                  </div>
-                )}
                 {loggedIn ? (
                   <MobileUserMenuSlot menu={userMenu} />
                 ) : (

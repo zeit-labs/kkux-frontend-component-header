@@ -411,9 +411,11 @@ $rounded-pill: 50rem  !default;
   inset: 0;
   z-index: 2000;
   pointer-events: none;
+  visibility: hidden;
 
   &--open {
     pointer-events: auto;
+    visibility: visible;
 
     .kkux-mobile-drawer__overlay {
       opacity: 1;
