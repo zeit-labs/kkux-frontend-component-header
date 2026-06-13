@@ -99,18 +99,6 @@ const MobileHeader = ({
               </a>
             </div>
 
-            {/* Close button: X icon, top-right corner */}
-            <button
-              type="button"
-              className="kkux-mobile-drawer__close"
-              onClick={() => setDrawerOpen(false)}
-              aria-label="Close"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </button>
-
             {/* User section (top of drawer) */}
             {(userMenu.length > 0 || loggedOutItems.length > 0) && (
               <div className="kkux-mobile-drawer__user">
@@ -152,6 +140,18 @@ const MobileHeader = ({
                 <MobileMainMenuSlot menu={combinedMenu} />
               </nav>
             )}
+
+            {/* Close button at bottom (matches marketing site SheetClose) */}
+            <button
+              type="button"
+              className="kkux-mobile-drawer__close"
+              onClick={() => setDrawerOpen(false)}
+              aria-label="Close"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
           </div>
         </div>
       )}
