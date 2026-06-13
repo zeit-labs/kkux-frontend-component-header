@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const MobileLoggedOutItems = ({ items }) => items.map(({ type, href, content }, i, arr) => (
-  <li className="nav-item px-3 my-2" key={`${type}-${content}`}>
-    <a
-      className={i < arr.length - 1 ? 'btn btn-block btn-outline-primary' : 'btn btn-block btn-primary'}
-      href={href}
-    >
-      {content}
-    </a>
-  </li>
-));
+const MobileLoggedOutItems = ({ items }) => (
+  <div className="kkux-mobile-drawer__logged-out">
+    {items.map(({ type, href, content }, i) => (
+      <a
+        key={`${type}-${content}`}
+        className={i === 0
+          ? 'kkux-mobile-drawer__item'
+          : 'kkux-mobile-drawer__item kkux-mobile-drawer__item--brand'}
+        href={href}
+      >
+        {content}
+      </a>
+    ))}
+  </div>
+);
 
 export const mobileHeaderLoggedOutItemsDataShape = PropTypes.arrayOf(PropTypes.shape({
   type: PropTypes.oneOf(['item', 'menu']),
@@ -18,8 +23,6 @@ export const mobileHeaderLoggedOutItemsDataShape = PropTypes.arrayOf(PropTypes.s
   content: PropTypes.string,
 }));
 
-MobileLoggedOutItems.propTypes = {
-  menu: mobileHeaderLoggedOutItemsDataShape,
-};
+MobileLoggedOutItems.propTypes = { items: mobileHeaderLoggedOutItemsDataShape };
 
 export default MobileLoggedOutItems;
