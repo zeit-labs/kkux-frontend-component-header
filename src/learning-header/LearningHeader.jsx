@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
+import Responsive from 'react-responsive';
 
 import AnonymousUserMenu from './AnonymousUserMenu';
 import AuthenticatedUserDropdown from './AuthenticatedUserDropdown';
@@ -10,6 +11,8 @@ import CourseInfoSlot from '../plugin-slots/CourseInfoSlot';
 import { courseInfoDataShape } from './LearningHeaderCourseInfo';
 import { messages, arMessages } from './messages';
 import LearningHelpSlot from '../plugin-slots/LearningHelpSlot';
+import MobileHeader from '../mobile-header/MobileHeader';
+import headerMessages from '../Header.messages';
 
 const LearningHeader = ({
   courseOrg, courseNumber, courseTitle, showUserDropdown,
@@ -31,41 +34,65 @@ const LearningHeader = ({
   };
 
   return (
-    <header className="kkux-header">
-      <a className="sr-only sr-only-focusable" href="#main-content">
-        {t(messages.skipNavLink)}
-      </a>
-      <div className="kkux-header__inner">
-        {/* Logo — matches PlatformLogo size-18 (72px) from marketing site */}
-        <a
-          href={`${getConfig().LMS_BASE_URL}/dashboard`}
-          className="kkux-header__logo"
-        >
-          <img src={getConfig().LOGO_URL} alt={getConfig().SITE_NAME} />
-        </a>
+    <>
+      <Responsive maxWidth={768}>
+        <MobileHeader
+          logo={getConfig().LOGO_URL}
+          logoAltText={getConfig().SITE_NAME}
+          logoDestination={`${getConfig().LMS_BASE_URL}/dashboard`}
+          loggedIn={!!authenticatedUser}
+          username={authenticatedUser?.username}
+          mainMenu={[]}
+          userMenu={authenticatedUser ? [{
+            heading: authenticatedUser.username,
+            items: [
+              { type: 'item', href: `${getConfig().LMS_BASE_URL}/dashboard`, content: t(messages.myCourses) },
+              { type: 'item', href: getConfig().LOGOUT_URL, content: t(messages.logout), variant: 'destructive' },
+            ],
+          }] : []}
+          loggedOutItems={!authenticatedUser ? [
+            { type: 'item', href: getConfig().LOGIN_URL, content: t(headerMessages['header.user.menu.login']) },
+          ] : []}
+        />
+      </Responsive>
+      <Responsive minWidth={769}>
+        <header className="kkux-header">
+          <a className="sr-only sr-only-focusable" href="#main-content">
+            {t(messages.skipNavLink)}
+          </a>
+          <div className="kkux-header__inner">
+            {/* Logo — matches PlatformLogo size-18 (72px) from marketing site */}
+            <a
+              href={`${getConfig().LMS_BASE_URL}/dashboard`}
+              className="kkux-header__logo"
+            >
+              <img src={getConfig().LOGO_URL} alt={getConfig().SITE_NAME} />
+            </a>
 
-        {/* Course title (desktop only) */}
-        <div className="kkux-header__title">
-          <CourseInfoSlot courseOrg={courseOrg} courseNumber={courseNumber} courseTitle={courseTitle} />
-        </div>
+            {/* Course title (desktop only) */}
+            <div className="kkux-header__title">
+              <CourseInfoSlot courseOrg={courseOrg} courseNumber={courseNumber} courseTitle={courseTitle} />
+            </div>
 
-        {/* Actions: help + user dropdown or login */}
-        <div className="kkux-header__actions">
-          {showUserDropdown && authenticatedUser && (
-            <>
-              <LearningHelpSlot />
-              <AuthenticatedUserDropdown
-                username={authenticatedUser.username}
-                t={t}
-              />
-            </>
-          )}
-          {showUserDropdown && !authenticatedUser && (
-            <AnonymousUserMenu t={t} />
-          )}
-        </div>
-      </div>
-    </header>
+            {/* Actions: help + user dropdown or login */}
+            <div className="kkux-header__actions">
+              {showUserDropdown && authenticatedUser && (
+                <>
+                  <LearningHelpSlot />
+                  <AuthenticatedUserDropdown
+                    username={authenticatedUser.username}
+                    t={t}
+                  />
+                </>
+              )}
+              {showUserDropdown && !authenticatedUser && (
+                <AnonymousUserMenu t={t} />
+              )}
+            </div>
+          </div>
+        </header>
+      </Responsive>
+    </>
   );
 };
 
