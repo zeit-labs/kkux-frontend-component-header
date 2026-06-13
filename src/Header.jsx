@@ -83,7 +83,7 @@ const Header = ({
 
   const mainMenu = mainMenuItems || defaultMainMenu;
   const secondaryMenu = secondaryMenuItems || [];
-  const userMenu = authenticatedUser === null ? [] : userMenuItems || defaultUserMenu;
+  const userMenu = authenticatedUser === null ? [] : defaultUserMenu;
 
   const loggedOutItems = [
     {
