@@ -104,3 +104,4 @@ DesktopHeader.defaultProps = {
 };
 
 export default DesktopHeader;
+export const desktopHeaderDataShape = DesktopHeader.propTypes;

@@ -23,6 +23,7 @@ ensureConfig([
   'SITE_NAME',
   'LOGO_URL',
   'ORDER_HISTORY_URL',
+  'KKUX_INVOICES_URL',
 ], 'Header component');
 
 subscribe(APP_CONFIG_INITIALIZED, () => {
@@ -59,33 +60,23 @@ const Header = ({
     },
   ];
   const defaultUserMenu = authenticatedUser === null ? [] : [{
-    heading: '',
+    heading: authenticatedUser.username,
     items: [
       {
         type: 'item',
         href: `${config.LMS_BASE_URL}/dashboard`,
         content: intl.formatMessage(messages['header.user.menu.dashboard']),
       },
-      {
+      ...(config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL ? [{
         type: 'item',
-        href: `${config.ACCOUNT_PROFILE_URL}/u/${authenticatedUser.username}`,
-        content: intl.formatMessage(messages['header.user.menu.profile']),
-      },
-      {
-        type: 'item',
-        href: config.ACCOUNT_SETTINGS_URL,
-        content: intl.formatMessage(messages['header.user.menu.account.settings']),
-      },
-      // Users should only see Order History if have a ORDER_HISTORY_URL define in the environment.
-      ...(config.ORDER_HISTORY_URL ? [{
-        type: 'item',
-        href: config.ORDER_HISTORY_URL,
+        href: config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL,
         content: intl.formatMessage(messages['header.user.menu.order.history']),
       }] : []),
       {
         type: 'item',
         href: config.LOGOUT_URL,
         content: intl.formatMessage(messages['header.user.menu.logout']),
+        variant: 'destructive',
       },
     ],
   }];

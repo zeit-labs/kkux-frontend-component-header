@@ -7,12 +7,11 @@ import LearningUserMenuSlot from '../plugin-slots/LearningUserMenuSlot';
 import { messages } from './messages';
 
 const AuthenticatedUserDropdown = ({ t, username }) => {
+  const invoiceUrl = getConfig().ORDER_HISTORY_URL || getConfig().KKUX_INVOICES_URL;
   const dropdownItems = [
-    { message: t(messages.dashboard), href: `${getConfig().LMS_BASE_URL}/dashboard` },
-    { message: t(messages.profile), href: `${getConfig().ACCOUNT_PROFILE_URL}/u/${username}` },
-    { message: t(messages.account), href: getConfig().ACCOUNT_SETTINGS_URL },
-    ...(getConfig().ORDER_HISTORY_URL ? [{ message: t(messages.orderHistory), href: getConfig().ORDER_HISTORY_URL }] : []),
-    { message: t(messages.signOut), href: getConfig().LOGOUT_URL },
+    { message: t(messages.myCourses), href: `${getConfig().LMS_BASE_URL}/dashboard` },
+    ...(invoiceUrl ? [{ message: t(messages.orders), href: invoiceUrl }] : []),
+    { message: t(messages.logout), href: getConfig().LOGOUT_URL },
   ];
 
   return (
@@ -30,7 +29,7 @@ const AuthenticatedUserDropdown = ({ t, username }) => {
         </svg>
       </Dropdown.Toggle>
       <Dropdown.Menu className="kkux-user-dropdown__menu">
-        <div className="kkux-user-dropdown__label">{t(messages.dashboard)}</div>
+        <div className="kkux-user-dropdown__label">{username}</div>
         <LearningUserMenuSlot items={dropdownItems} />
       </Dropdown.Menu>
     </Dropdown>

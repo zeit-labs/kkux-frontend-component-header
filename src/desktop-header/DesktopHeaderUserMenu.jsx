@@ -9,13 +9,15 @@ const DesktopHeaderUserMenu = ({ menu }) => menu.map((group, index) => (
       </div>
     )}
     {group.items.map(({
-      type, content, href, disabled, isActive, onClick,
+      type, content, href, disabled, isActive, onClick, variant,
     }) => (
       <a
         className={`kkux-dropdown__item${
           disabled ? ' kkux-dropdown__item--disabled' : ''
         }${
           isActive ? ' kkux-dropdown__item--active' : ''
+        }${
+          variant === 'destructive' ? ' kkux-dropdown__item--destructive' : ''
         }`}
         key={`${type}-${content}`}
         href={disabled ? undefined : href}
