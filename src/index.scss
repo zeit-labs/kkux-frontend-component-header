@@ -455,6 +455,20 @@ $rounded-pill: 50rem  !default;
     font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
   }
 
+  // Brand X icon: matches KKUxXIcon size-8 text-pillar-700 (SheetHeader)
+  &__brand {
+    padding: 1rem 1rem 0;
+
+    a {
+      display: inline-flex;
+      color: #007359;  // pillar-700
+    }
+
+    svg {
+      display: block;
+    }
+  }
+
   // Close button: matches size="icon-sm" (28px), variant="ghost"
   &__close {
     position: absolute;

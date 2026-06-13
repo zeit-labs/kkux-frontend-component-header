@@ -76,6 +76,29 @@ const MobileHeader = ({
 
           {/* Drawer: w-3/4 sm:max-w-sm, slides from right (LTR) or left (RTL) */}
           <div className="kkux-mobile-drawer__sheet" role="dialog" aria-modal="true">
+            {/* Brand X icon (matches SheetHeader > SheetTitle > KKUxXIcon size-8) */}
+            <div className="kkux-mobile-drawer__brand">
+              <a href={`${getConfig().LMS_BASE_URL}/dashboard`} aria-label="KKUx">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 80 54" width="32" height="32" aria-hidden="true">
+                  <path d="M42.8545 20.34L46.01 24.3C48.0738 24.92 50.2253 25.23 52.4325 25.23C65.1182 25.23 75.8277 14.58 79.1904 0.0199986V0H54.4405C54.4405 0 54.4405 -1.44914e-06 54.4405 0.0199986C52.5919 8.39 48.4244 15.54 42.8545 20.33V20.34Z" fill="url(#kkux-mobile-x-grad1)" />
+                  <path d="M0 53.4895H24.7578C26.6065 45.1095 30.774 37.9395 36.3439 33.1695L33.1884 29.1995C31.1245 28.5795 28.9651 28.2695 26.7659 28.2695C14.0722 28.2695 3.36266 38.9195 0 53.4895Z" fill="url(#kkux-mobile-x-grad2)" />
+                  <path d="M9.94434 0.0195312L33.1881 29.1895L36.3436 33.1595C36.3436 33.1595 36.3436 33.1595 36.3596 33.1395L52.5673 53.4795H69.2611L67.771 51.6095L45.9933 24.2895L42.8379 20.3295C42.8379 20.3295 42.8219 20.3295 42.8219 20.3495L26.6381 0.0195312H9.94434Z" fill="currentColor" />
+                  <defs>
+                    <linearGradient id="kkux-mobile-x-grad1" x1="44.5438" y1="22.28" x2="79.0291" y2="5.72351" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="currentColor" stopOpacity="0" />
+                      <stop offset="0.46" stopColor="currentColor" />
+                      <stop offset="1" stopColor="currentColor" />
+                    </linearGradient>
+                    <linearGradient id="kkux-mobile-x-grad2" x1="10.1836" y1="47.9995" x2="37.4221" y2="38.1996" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="currentColor" />
+                      <stop offset="0.54" stopColor="currentColor" />
+                      <stop offset="1" stopColor="currentColor" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </a>
+            </div>
+
             {/* Close button: X icon, top-right corner */}
             <button
               type="button"
