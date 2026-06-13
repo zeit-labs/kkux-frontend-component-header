@@ -76,6 +76,18 @@ const MobileHeader = ({
 
           {/* Drawer: w-3/4 sm:max-w-sm, slides from right (LTR) or left (RTL) */}
           <div className="kkux-mobile-drawer__sheet" role="dialog" aria-modal="true">
+            {/* Close button at top-right (matches marketing site SheetClose) */}
+            <button
+              type="button"
+              className="kkux-mobile-drawer__close"
+              onClick={() => setDrawerOpen(false)}
+              aria-label="Close"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+
             {/* Brand X icon (matches SheetHeader > SheetTitle > KKUxXIcon size-8) */}
             <div className="kkux-mobile-drawer__brand">
               <a href={`${getConfig().LMS_BASE_URL}/dashboard`} aria-label="KKUx">
@@ -140,18 +152,6 @@ const MobileHeader = ({
                 <MobileMainMenuSlot menu={combinedMenu} />
               </nav>
             )}
-
-            {/* Close button at bottom (matches marketing site SheetClose) */}
-            <button
-              type="button"
-              className="kkux-mobile-drawer__close"
-              onClick={() => setDrawerOpen(false)}
-              aria-label="Close"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </button>
           </div>
         </div>
       )}
