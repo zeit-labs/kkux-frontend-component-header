@@ -679,6 +679,12 @@ $rounded-pill: 50rem  !default;
 // ============================================================
 // Legacy helpers
 // ============================================================
+
+// Prevent sticky header from overlapping iframe content (instructor, units)
+.unit-iframe-wrapper {
+  padding-top: 3.5rem;
+}
+
 .dropdown-item a { text-decoration: none; }
 .icon-button {
   display: inline-flex; line-height: 3rem; background: transparent;
