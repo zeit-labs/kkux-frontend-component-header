@@ -25,8 +25,14 @@ const LanguageSwitcher = () => {
     langInput.name = 'language';
     langInput.value = targetLang;
 
+    const nextInput = document.createElement('input');
+    nextInput.type = 'hidden';
+    nextInput.name = 'next';
+    nextInput.value = window.location.pathname + window.location.search;
+
     form.appendChild(csrfInput);
     form.appendChild(langInput);
+    form.appendChild(nextInput);
     document.body.appendChild(form);
     form.submit();
   }, [isArabic]);
