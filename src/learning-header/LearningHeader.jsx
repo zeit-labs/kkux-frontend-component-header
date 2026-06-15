@@ -12,6 +12,7 @@ import { courseInfoDataShape } from './LearningHeaderCourseInfo';
 import { messages, arMessages } from './messages';
 import LearningHelpSlot from '../plugin-slots/LearningHelpSlot';
 import MobileHeader from '../mobile-header/MobileHeader';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 import headerMessages from '../Header.messages';
 
 const LearningHeader = ({
@@ -74,8 +75,9 @@ const LearningHeader = ({
               <CourseInfoSlot courseOrg={courseOrg} courseNumber={courseNumber} courseTitle={courseTitle} />
             </div>
 
-            {/* Actions: help + user dropdown or login */}
+            {/* Actions: language switcher + help + user dropdown or login */}
             <div className="kkux-header__actions">
+              <LanguageSwitcher />
               {showUserDropdown && authenticatedUser && (
                 <>
                   <LearningHelpSlot />

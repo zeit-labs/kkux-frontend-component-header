@@ -112,43 +112,43 @@ const MobileHeader = ({
               </a>
             </div>
 
-            {/* Language switcher (top of drawer, matches marketing site) */}
-            <div className="kkux-mobile-drawer__lang">
-              <LanguageSwitcher />
-            </div>
-
-            {/* User section (top of drawer) */}
-            {(userMenu.length > 0 || loggedOutItems.length > 0) && (
-              <div className="kkux-mobile-drawer__user">
+            {/* Actions row: language switcher + user toggle side by side (matches marketing site NavbarActions) */}
+            {(loggedIn || loggedOutItems.length > 0) && (
+              <div className="kkux-mobile-drawer__actions">
+                <LanguageSwitcher />
                 {loggedIn ? (
-                  <>
-                    {/* Toggle button: matches marketing site DropdownMenuTrigger ghost button */}
-                    <button
-                      type="button"
-                      className="kkux-mobile-drawer__user-toggle"
-                      onClick={() => setUserExpanded(!userExpanded)}
-                      aria-expanded={userExpanded}
+                  <button
+                    type="button"
+                    className="kkux-mobile-drawer__user-toggle"
+                    onClick={() => setUserExpanded(!userExpanded)}
+                    aria-expanded={userExpanded}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="8" r="4" fill="currentColor" />
+                      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" strokeWidth="2" fill="none" />
+                    </svg>
+                    <span className="kkux-mobile-drawer__username">{username}</span>
+                    <svg
+                      className={`kkux-mobile-drawer__chevron${userExpanded ? ' kkux-mobile-drawer__chevron--open' : ''}`}
+                      width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"
                     >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <circle cx="12" cy="8" r="4" fill="currentColor" />
-                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" strokeWidth="2" fill="none" />
-                      </svg>
-                      <span className="kkux-mobile-drawer__username">{username}</span>
-                      <svg
-                        className={`kkux-mobile-drawer__chevron${userExpanded ? ' kkux-mobile-drawer__chevron--open' : ''}`}
-                        width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"
-                      >
-                        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
-                    {/* Collapsible menu items */}
-                    <div className={`kkux-mobile-drawer__user-menu${userExpanded ? ' kkux-mobile-drawer__user-menu--open' : ''}`}>
-                      <MobileUserMenuSlot menu={userMenu} />
-                    </div>
-                  </>
+                      <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
                 ) : (
-                  <MobileLoggedOutItemsSlot items={loggedOutItems} />
+                  <div className="kkux-mobile-drawer__logged-out">
+                    <MobileLoggedOutItemsSlot items={loggedOutItems} />
+                  </div>
                 )}
+              </div>
+            )}
+
+            {/* Collapsible user menu (below actions row) */}
+            {loggedIn && (
+              <div className="kkux-mobile-drawer__user">
+                <div className={`kkux-mobile-drawer__user-menu${userExpanded ? ' kkux-mobile-drawer__user-menu--open' : ''}`}>
+                  <MobileUserMenuSlot menu={userMenu} />
+                </div>
               </div>
             )}
 

@@ -2,6 +2,18 @@ import React, { useCallback } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { LanguageIcon } from '../Icons';
 
+function getCookie(name) {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.split('; ').find(c => c.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.split('=')[1]) : null;
+}
+
+function getCsrfToken() {
+  const fromDom = document.querySelector('[name=csrfmiddlewaretoken]');
+  if (fromDom) return fromDom.value;
+  return getCookie('csrftoken') || '';
+}
+
 const LanguageSwitcher = () => {
   const intl = useIntl();
   const isArabic = intl.locale && intl.locale.startsWith('ar')
@@ -14,11 +26,10 @@ const LanguageSwitcher = () => {
     form.action = '/i18n/setlang/';
     form.style.display = 'none';
 
-    const csrf = document.querySelector('[name=csrfmiddlewaretoken]');
     const csrfInput = document.createElement('input');
     csrfInput.type = 'hidden';
     csrfInput.name = 'csrfmiddlewaretoken';
-    csrfInput.value = csrf ? csrf.value : '';
+    csrfInput.value = getCsrfToken();
 
     const langInput = document.createElement('input');
     langInput.type = 'hidden';
