@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { LanguageIcon } from '../Icons';
 
-function getCsrfToken() {
-  if (typeof document === 'undefined') return '';
-  const fromDom = document.querySelector('[name=csrfmiddlewaretoken]');
-  if (fromDom) return fromDom.value;
-  const match = document.cookie.split('; ').find(c => c.startsWith('csrftoken='));
-  return match ? decodeURIComponent(match.split('=')[1]) : '';
+function getCookie(name) {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.split('; ').find(c => c.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.split('=')[1]) : null;
 }
 
 const LanguageSwitcher = () => {
@@ -17,34 +16,31 @@ const LanguageSwitcher = () => {
   const isArabic = intl.locale && intl.locale.startsWith('ar')
     || (typeof document !== 'undefined' && document.documentElement.dir === 'rtl');
 
-  const handleSwitch = useCallback(() => {
+  const handleSwitch = useCallback(async () => {
     const targetLang = isArabic ? 'en' : 'ar';
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = `${config.LMS_BASE_URL}/i18n/setlang/`;
-    form.style.display = 'none';
+    const username = getCookie('edx-user-info') ? JSON.parse(decodeURIComponent(getCookie('edx-user-info')))?.username : null;
 
-    const csrfInput = document.createElement('input');
-    csrfInput.type = 'hidden';
-    csrfInput.name = 'csrfmiddlewaretoken';
-    csrfInput.value = getCsrfToken();
+    try {
+      // 1. Save preference via API (Account MFE approach)
+      await getAuthenticatedHttpClient().patch(
+        `${config.LMS_BASE_URL}/api/user/v1/preferences/${username}`,
+        { 'pref-lang': targetLang },
+        { headers: { 'Content-Type': 'application/merge-patch+json' } },
+      );
 
-    const langInput = document.createElement('input');
-    langInput.type = 'hidden';
-    langInput.name = 'language';
-    langInput.value = targetLang;
+      // 2. Notify LMS to set language cookie
+      const formData = new FormData();
+      formData.append('language', targetLang);
+      await getAuthenticatedHttpClient().post(
+        `${config.LMS_BASE_URL}/i18n/setlang/`,
+        formData,
+      );
+    } catch (e) {
+      // Fall through to reload anyway
+    }
 
-    // Redirect back to LMS /dashboard which proxies to learner-dashboard MFE
-    const nextInput = document.createElement('input');
-    nextInput.type = 'hidden';
-    nextInput.name = 'next';
-    nextInput.value = '/dashboard';
-
-    form.appendChild(csrfInput);
-    form.appendChild(langInput);
-    form.appendChild(nextInput);
-    document.body.appendChild(form);
-    form.submit();
+    // 3. Reload page with new language
+    window.location.reload();
   }, [isArabic, config.LMS_BASE_URL]);
 
   return (
