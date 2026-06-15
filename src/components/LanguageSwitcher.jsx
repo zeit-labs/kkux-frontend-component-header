@@ -3,10 +3,12 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
 import { LanguageIcon } from '../Icons';
 
-function getCookie(name) {
-  if (typeof document === 'undefined') return null;
-  const match = document.cookie.split('; ').find(c => c.startsWith(`${name}=`));
-  return match ? decodeURIComponent(match.split('=')[1]) : null;
+function getCsrfToken() {
+  if (typeof document === 'undefined') return '';
+  const fromDom = document.querySelector('[name=csrfmiddlewaretoken]');
+  if (fromDom) return fromDom.value;
+  const match = document.cookie.split('; ').find(c => c.startsWith('csrftoken='));
+  return match ? decodeURIComponent(match.split('=')[1]) : '';
 }
 
 const LanguageSwitcher = () => {
@@ -25,17 +27,18 @@ const LanguageSwitcher = () => {
     const csrfInput = document.createElement('input');
     csrfInput.type = 'hidden';
     csrfInput.name = 'csrfmiddlewaretoken';
-    csrfInput.value = getCookie('csrftoken') || '';
+    csrfInput.value = getCsrfToken();
 
     const langInput = document.createElement('input');
     langInput.type = 'hidden';
     langInput.name = 'language';
     langInput.value = targetLang;
 
+    // Redirect back to LMS /dashboard which proxies to learner-dashboard MFE
     const nextInput = document.createElement('input');
     nextInput.type = 'hidden';
     nextInput.name = 'next';
-    nextInput.value = window.location.pathname + window.location.search;
+    nextInput.value = '/dashboard';
 
     form.appendChild(csrfInput);
     form.appendChild(langInput);
