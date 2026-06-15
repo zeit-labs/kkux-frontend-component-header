@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { getConfig } from '@edx/frontend-platform';
 import { LanguageIcon } from '../Icons';
 
 function getCookie(name) {
@@ -8,14 +9,9 @@ function getCookie(name) {
   return match ? decodeURIComponent(match.split('=')[1]) : null;
 }
 
-function getCsrfToken() {
-  const fromDom = document.querySelector('[name=csrfmiddlewaretoken]');
-  if (fromDom) return fromDom.value;
-  return getCookie('csrftoken') || '';
-}
-
 const LanguageSwitcher = () => {
   const intl = useIntl();
+  const config = getConfig();
   const isArabic = intl.locale && intl.locale.startsWith('ar')
     || (typeof document !== 'undefined' && document.documentElement.dir === 'rtl');
 
@@ -23,13 +19,13 @@ const LanguageSwitcher = () => {
     const targetLang = isArabic ? 'en' : 'ar';
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = '/i18n/setlang/';
+    form.action = `${config.LMS_BASE_URL}/i18n/setlang/`;
     form.style.display = 'none';
 
     const csrfInput = document.createElement('input');
     csrfInput.type = 'hidden';
     csrfInput.name = 'csrfmiddlewaretoken';
-    csrfInput.value = getCsrfToken();
+    csrfInput.value = getCookie('csrftoken') || '';
 
     const langInput = document.createElement('input');
     langInput.type = 'hidden';
@@ -46,7 +42,7 @@ const LanguageSwitcher = () => {
     form.appendChild(nextInput);
     document.body.appendChild(form);
     form.submit();
-  }, [isArabic]);
+  }, [isArabic, config.LMS_BASE_URL]);
 
   return (
     <button
