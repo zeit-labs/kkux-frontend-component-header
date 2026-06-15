@@ -10,6 +10,7 @@ import MobileMainMenuSlot from '../plugin-slots/MobileMainMenuSlot';
 import { mobileHeaderMainMenuDataShape } from './MobileHeaderMainMenu';
 import MobileUserMenuSlot from '../plugin-slots/MobileUserMenuSlot';
 import { mobileHeaderUserMenuDataShape } from './MobileHeaderUserMenu';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 import messages, { arMessages } from '../Header.messages';
 
@@ -109,6 +110,11 @@ const MobileHeader = ({
                   </defs>
                 </svg>
               </a>
+            </div>
+
+            {/* Language switcher (top of drawer, matches marketing site) */}
+            <div className="kkux-mobile-drawer__lang">
+              <LanguageSwitcher />
             </div>
 
             {/* User section (top of drawer) */}

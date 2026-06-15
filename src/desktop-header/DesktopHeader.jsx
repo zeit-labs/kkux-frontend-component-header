@@ -12,6 +12,7 @@ import { desktopHeaderMainOrSecondaryMenuDataShape } from './DesktopHeaderMainOr
 import DesktopSecondaryMenuSlot from '../plugin-slots/DesktopSecondaryMenuSlot';
 import DesktopUserMenuSlot from '../plugin-slots/DesktopUserMenuSlot';
 import { desktopUserMenuDataShape } from './DesktopHeaderUserMenu';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 import messages, { arMessages } from '../Header.messages';
 
@@ -50,6 +51,7 @@ const DesktopHeader = (props) => {
 
         {/* Right section: matches NavbarActions flex items-center gap-2 */}
         <div className="kkux-header__actions">
+          <LanguageSwitcher />
           {loggedIn ? (
             <>
               {/* Secondary menu */}
