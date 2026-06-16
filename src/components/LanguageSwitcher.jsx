@@ -4,6 +4,19 @@ import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { LanguageIcon } from '../Icons';
 
+function getUsernameFromJwt() {
+  try {
+    const match = document.cookie.split('; ').find(c => c.startsWith('edx-jwt-cookie-header-payload='));
+    if (!match) return null;
+    const jwt = match.split('=')[1];
+    const payloadBase64 = jwt.split('.')[1];
+    const payload = JSON.parse(atob(payloadBase64));
+    return payload.preferred_username;
+  } catch {
+    return null;
+  }
+}
+
 const LanguageSwitcher = () => {
   const intl = useIntl();
   const config = getConfig();
@@ -12,11 +25,11 @@ const LanguageSwitcher = () => {
 
   const handleSwitch = useCallback(async () => {
     const targetLang = isArabic ? 'en' : 'ar';
+    const username = getUsernameFromJwt() || 'admin';
 
     try {
-      // Use authenticated client — same approach as Account MFE
       await getAuthenticatedHttpClient().patch(
-        `${config.LMS_BASE_URL}/api/user/v1/preferences/admin`,
+        `${config.LMS_BASE_URL}/api/user/v1/preferences/${username}`,
         { 'pref-lang': targetLang },
         { headers: { 'Content-Type': 'application/merge-patch+json' } },
       );
