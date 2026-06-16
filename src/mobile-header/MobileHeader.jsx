@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes, { bool } from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
@@ -23,8 +23,11 @@ const MobileHeader = ({
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [userExpanded, setUserExpanded] = React.useState(false);
 
-  const isArabic = intl.locale && intl.locale.startsWith('ar')
-    || (typeof document !== 'undefined' && document.documentElement.dir === 'rtl');
+  const isArabic = useMemo(() => (
+    intl.locale && intl.locale.startsWith('ar')
+  ) || (
+    typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
+  ), [intl.locale]);
 
   const t = (msg, values) => {
     if (isArabic && arMessages[msg.id]) {

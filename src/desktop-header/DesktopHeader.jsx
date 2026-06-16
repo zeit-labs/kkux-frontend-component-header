@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
@@ -23,8 +23,11 @@ const DesktopHeader = (props) => {
     username, loggedIn,
   } = props;
   const intl = useIntl();
-  const isArabic = intl.locale && intl.locale.startsWith('ar')
-    || (typeof document !== 'undefined' && document.documentElement.dir === 'rtl');
+  const isArabic = useMemo(() => (
+    intl.locale && intl.locale.startsWith('ar')
+  ) || (
+    typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
+  ), [intl.locale]);
 
   const t = (msg, values) => {
     if (isArabic && arMessages[msg.id]) {

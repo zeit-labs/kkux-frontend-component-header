@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
 import { useIntl } from '@edx/frontend-platform/i18n';
@@ -20,8 +20,11 @@ const LearningHeader = ({
 }) => {
   const intl = useIntl();
   const { authenticatedUser } = useContext(AppContext);
-  const isArabic = intl.locale && intl.locale.startsWith('ar')
-    || (typeof document !== 'undefined' && document.documentElement.dir === 'rtl');
+  const isArabic = useMemo(() => (
+    intl.locale && intl.locale.startsWith('ar')
+  ) || (
+    typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
+  ), [intl.locale]);
 
   const t = (msg, values) => {
     if (isArabic && arMessages[msg.id]) {

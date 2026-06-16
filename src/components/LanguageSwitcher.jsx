@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
@@ -20,8 +20,11 @@ function getUsernameFromJwt() {
 const LanguageSwitcher = () => {
   const intl = useIntl();
   const config = getConfig();
-  const isArabic = intl.locale && intl.locale.startsWith('ar')
-    || (typeof document !== 'undefined' && document.documentElement.dir === 'rtl');
+  const isArabic = useMemo(() => (
+    intl.locale && intl.locale.startsWith('ar')
+  ) || (
+    typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
+  ), [intl.locale]);
 
   const handleSwitch = useCallback(async () => {
     const targetLang = isArabic ? 'en' : 'ar';

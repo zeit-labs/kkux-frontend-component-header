@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import Responsive from 'react-responsive';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
@@ -51,8 +51,11 @@ const Header = ({
   intl, mainMenuItems, secondaryMenuItems, userMenuItems,
 }) => {
   const { authenticatedUser, config } = useContext(AppContext);
-  const isArabic = intl.locale && intl.locale.startsWith('ar')
-    || (typeof document !== 'undefined' && document.documentElement.dir === 'rtl');
+  const isArabic = useMemo(() => (
+    intl.locale && intl.locale.startsWith('ar')
+  ) || (
+    typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
+  ), [intl.locale]);
 
   const t = (msg, values) => {
     if (isArabic && arMessages[msg.id]) {
