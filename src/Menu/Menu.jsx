@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 
 const MenuTrigger = ({ tag, className, ...attributes }) => React.createElement(tag, {
-  className: `menu-trigger ${className}`,
+  className: `menu-trigger${className ? ` ${className}` : ''}`,
   ...attributes,
 });
 MenuTrigger.propTypes = {
@@ -251,7 +251,7 @@ class Menu extends React.Component {
     const rootClassName = this.state.expanded ? 'menu expanded' : 'menu';
 
     return React.createElement(this.props.tag, {
-      className: `${rootClassName} ${className}`,
+      className: `${rootClassName}${className ? ` ${className}` : ''}`,
       ref: this.menu,
       onKeyDown: this.onKeyDown,
       onMouseEnter: this.onMouseEnter,

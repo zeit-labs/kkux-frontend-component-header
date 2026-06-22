@@ -7,131 +7,752 @@ $rounded-pill: 50rem  !default;
 
 @import './Menu/menu.scss';
 @import './studio-header/StudioHeader.scss';
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
-.dropdown-item a {
-  text-decoration: none;
-}
+// ============================================================
+// KKUx Header — matches kkux-marketing-site navbar pixel-for-pixel
+//
+// Marketing site mapping:
+//   bg-white px-6 sm:px-0  →  background + padding
+//   sticky top-0 z-50       →  position + z-index
+//   container mx-auto        →  max-w-7xl + mx-auto
+//   size-18                  →  72px (logo)
+//   Button size="xl"         →  h-13 (52px) nav items
+//   Button variant="ghost"   →  NO border, hover:bg-[#f3f4f6]
+//   Button variant="default" →  bg-[#007359] text-white
+//   DropdownMenuContent      →  rounded-lg p-1 shadow-md ring-1
+// ============================================================
 
-.icon-button {
-  display: inline-flex;
-  line-height: 3rem;
-  background: transparent;
-  vertical-align: middle;
-  text-align: center;
-  border: none;
-  height: 3rem;
-  width: 3rem;
-  padding: .75rem;
-  justify-content: center;
-  align-items:center;
+.kkux-header {
+  position: sticky !important;
+  top: 0;
+  z-index: 1050;
+  width: 100%;
+  flex-shrink: 0;
+  background: #fff !important;
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  padding: 0 1.5rem;
 
-  &:hover, &:focus {
-    background: rgba(0, 0, 0, .1);
+  @media (min-width: 640px) { padding: 0; }
+
+  a, .nav-link { font-family: inherit; }
+
+  // Container: matches marketing site <div className="container mx-auto">
+  &__inner {
+    display: flex;
+    align-items: center;
+    height: 3.5rem;
+    max-width: 80rem;         // max-w-7xl
+    margin: 0 auto;
+    gap: 1.5rem;              // gap-6
+    padding: 0;
   }
-}
 
-.learning-header {
-  min-width: 0;
+  // Logo: matches PlatformLogo size-18 (72px)
+  // Override Bootstrap .logo styles
+  &__logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
 
-  .course-title-lockup {
-    min-width: 0;
-
-    span {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding-bottom: calc(var(--pgn-spacing-spacer-base, $spacer)* 0.1);
+    a.logo, a {
+      display: flex !important;
+      align-items: center;
+      height: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      text-decoration: none;
+      box-sizing: content-box;
+      position: static;
     }
-  }
-
-  .user-dropdown .btn {
-    height: 3rem;
-  }
-}
-
-.site-header-mobile,
-.site-header-desktop {
-  position: relative;
-  z-index: 1000;
-}
-
-.site-header-mobile {
-  height: 3rem;
-
-  .nav-link {
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  img {
-    height: 1.5rem;
-  }
-}
-
-
-.site-header-desktop {
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, .1);
-  background: var(--pgn-color-white, $white);
-
-  .nav-link {
-    text-decoration: none;
-  }
-
-  .logo {
-    display: block;
-    box-sizing: content-box;
-    position: relative;
-    top: -.05em;
-    height: 1.75rem;
-    padding: var(--pgn-spacing-spacer-base, $spacer) 0;
-    margin-right: var(--pgn-spacing-spacer-base, $spacer);
 
     img {
+      height: 2.25rem !important;  // 48px in 72px bar
+      width: auto !important;
       display: block;
-      height: 100%;
     }
   }
-  .secondary-menu-container {
-    .nav-link:hover,
-    .nav-link:focus,
-    .nav-link.active,
-    .expanded .nav-link {
-      background: var(--pgn-color-bg-active, $component-active-bg);
-      color: var(--pgn-color-active, $component-active-color);
+
+  // Main nav: matches marketing site NavigationMenu + Button h-13 px-4
+  &__nav-main {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  // Nav link: matches Button size="xl" ghost/default
+  &__nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem !important;   // h-13 = 52px
+    padding: 0 1rem !important;    // px-4
+    border-radius: 0.375rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #333 !important;
+    text-decoration: none !important;
+    font-family: inherit;
+    cursor: pointer;
+    border: none !important;
+    background: transparent !important;
+    transition: background-color 0.15s;
+    letter-spacing: normal !important;
+    white-space: nowrap;
+
+    &:hover {
+      background: #f3f4f6 !important;
+      color: #333 !important;
+    }
+
+    // Active: green bg + white text (variant="default")
+    &--active {
+      background: #007359 !important;
+      color: #fff !important;
+      &:hover { background: #005c47 !important; color: #fff !important; }
+    }
+
+    // Disabled: gray, no interaction
+    &--disabled {
+      color: #999 !important;
+      cursor: default; pointer-events: none;
+      &:hover { background: transparent !important; color: #999 !important; }
+    }
+
+    &--has-children { gap: 0.25rem; svg { width: 0.625rem; height: 0.625rem; color: #999; } }
+  }
+
+  // Active indicator: matches bg-growth-300/50 h-1.5 w-5/6 rounded-full
+  &__nav-active-bar {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    height: 0.375rem; width: 83.33%;
+    border-radius: 9999px;
+    background: rgba(3, 254, 150, 0.5);
+  }
+
+  // Right actions: matches NavbarActions flex items-center gap-2
+  &__actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  // User button: ghost variant — NO border, transparent bg, hover:bg-gray-100
+  &__user-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem !important;
+    border: none !important;
+    background: transparent !important;
+    color: #333 !important;
+    border-radius: 0.375rem !important;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 400 !important;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    height: auto !important;
+    box-shadow: none !important;
+
+    &:hover { background: #f3f4f6 !important; color: #333 !important; }
+    svg { color: #999; }
+  }
+
+  &__user-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #333;
+    font-family: inherit;
+  }
+
+  // Dropdown menu: pixel-match DropdownMenuContent rounded-lg p-1 shadow-md ring-1
+  &__dropdown {
+    position: absolute !important;
+    z-index: 2000;
+    background: #fff !important;
+    border-radius: 0.625rem !important;       // rounded-lg = 10px
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1) !important; // shadow-md
+    border: 1px solid rgba(0,0,0,0.06) !important;
+    min-width: 8rem;                           // min-w-32 = 128px
+    padding: 0.25rem !important;               // p-1
+    margin-top: 0.25rem;
+    right: 0 !important;
+    left: auto !important;
+
+    a, .dropdown-item {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;                     // text-sm
+      padding: 0.25rem 0.375rem !important;    // py-1 px-1.5
+      color: #010d09 !important;               // text-popover-foreground ≈ pulse-950
+      text-decoration: none !important;
+      font-family: inherit;
+      border-radius: 0.5rem;                   // rounded-md = 8px
+      margin: 0 !important;
+      background: transparent !important;
+      &:hover { background: #e6e6e6 !important; } // focus:bg-gray-100
     }
   }
-  .main-nav {
-    .nav-link {
-      padding: 1.125rem var(--pgn-spacing-spacer-base, $spacer);
-      text-decoration: none;
+
+  // Dropdown label: pixel-match DropdownMenuLabel text-xs font-medium text-muted-foreground
+  &__dropdown &__label,
+  .kkux-dropdown__label {
+    font-size: 0.75rem;                        // text-xs
+    font-weight: 500;                          // font-medium
+    color: #555;                               // text-muted-foreground ≈ gray-600
+    padding: 0.25rem 0.375rem;                 // py-1 px-1.5
+    font-family: inherit;
+  }
+
+  // Dropdown item: pixel-match DropdownMenuItem rounded-md px-1.5 py-1 text-sm
+  .kkux-dropdown__item {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;                       // text-sm
+    padding: 0.25rem 0.375rem;                 // py-1 px-1.5
+    color: #010d09;                            // text-popover-foreground
+    text-decoration: none;
+    font-family: inherit;
+    border-radius: 0.5rem;                     // rounded-md = 8px
+    margin: 0;
+    cursor: pointer;
+
+    &:hover {
+      background: #e6e6e6;                     // focus:bg-gray-100
+    }
+
+    &--disabled {
+      color: #999 !important;
+      cursor: default;
+      pointer-events: none;
+      &:hover { background: transparent; }
+    }
+
+    &--active {
+      color: #007359 !important;
       font-weight: 500;
-      letter-spacing: .01em;
     }
 
-    .nav-link:hover,
-    .nav-link:focus,
-    .nav-link.active,
-    .expanded .nav-link {
-      background: var(--pgn-color-bg-active, $component-active-bg);
-      color: var(--pgn-color-active, $component-active-color);
-    }
+    &--destructive {
+      color: #d92d20 !important;
 
-    .menu {
-      position: static;
-
-      .menu-content {
-        border-top: solid 2px var(--pgn-color-bg-active);
-        left: 0;
-        right: 0;
-        box-shadow: var(--pgn-elevation-box-shadow-down-1, 0 1px 2px rgba(0,0,0,.25));
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
-        padding: var(--pgn-spacing-spacer-base, $spacer);
+      &:hover {
+        background: rgba(217, 45, 32, 0.08);
+        color: #d92d20 !important;
       }
     }
   }
 
-  .search-input {
-    border-radius: var(--pgn-size-rounded-pill, $rounded-pill);
+  // Dropdown separator: pixel-match DropdownMenuSeparator bg-border h-px -mx-1 my-1
+  .kkux-dropdown__separator {
+    height: 1px;                               // h-px
+    background: #ccc;                          // bg-border ≈ gray-200
+    margin: 0.25rem -0.25rem;                  // my-1 -mx-1
   }
+
+  // Course title (LearningHeader only)
+  &__title {
+    flex: 1 1 auto;
+    min-width: 0; overflow: hidden;
+    span, a, div {
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-size: 0.8125rem; color: #666;
+    }
+  }
+}
+
+// ============================================================
+// LearningHeader user dropdown (ghost style, matches Dashboard)
+// ============================================================
+
+.kkux-user-dropdown {
+  .btn, .btn-outline-primary, .dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.5rem;
+    height: auto !important;
+    padding: 0.375rem 0.75rem !important;
+    border: none !important;
+    color: #333 !important;
+    background: transparent !important;
+    border-radius: 0.375rem !important;
+    font-size: 0.875rem;
+    font-family: inherit;
+    font-weight: 400;
+    cursor: pointer;
+    box-shadow: none !important;
+    transition: background-color 0.15s;
+
+    &:hover, &:focus, &:active {
+      background: #f3f4f6 !important;
+      color: #333 !important;
+    }
+
+    &::after { display: none; }  // hide Bootstrap dropdown caret
+    svg { color: #999; }
+  }
+
+  &__name {
+    max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: #333;
+  }
+
+  &__menu {
+    border-radius: 0.625rem !important;       // rounded-lg
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1) !important; // shadow-md
+    border: 1px solid rgba(0,0,0,0.06) !important;
+    padding: 0.25rem !important;               // p-1
+    min-width: 8rem !important;                // min-w-32
+    font-family: inherit;
+    .dropdown-item {
+      font-size: 0.875rem; padding: 0.25rem 0.375rem !important; // py-1 px-1.5
+      border-radius: 0.5rem; margin: 0; color: #010d09;
+      &:hover { background: #e6e6e6 !important; }
+    }
+  }
+  &__label {
+    font-size: 0.75rem; font-weight: 500; color: #555;
+    padding: 0.25rem 0.375rem; font-family: inherit; // py-1 px-1.5
+  }
+}
+
+// Logged out: Register link + Sign In brand button
+.kkux-logged-out {
+  display: flex; align-items: center; gap: 0.75rem; font-family: inherit;
+  &__link {
+    font-size: 0.875rem; color: #007359; text-decoration: none; font-weight: 500;
+    &:hover { text-decoration: underline; }
+  }
+  .btn-brand {
+    font-family: inherit; font-weight: 500;
+    background-color: #007359; border-color: #007359;
+    &:hover { background-color: #005c47; border-color: #005c47; }
+  }
+}
+
+// Language switcher: matches marketing site ghost icon button (size-8, icon-only)
+.kkux-language-switcher {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none !important;
+  border-radius: 0.375rem;
+  background: transparent !important;
+  color: #333 !important;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: none !important;
+  transition: background-color 0.15s ease;
+
+  &:hover, &:focus { background: #f3f4f6 !important; }
+
+  svg { width: 1rem; height: 1rem; }
+}
+
+// ============================================================
+// Mobile Header — matches kkux-marketing-site MobileNavigation + Sheet
+//
+// Marketing site mapping:
+//   flex items-center justify-between  →  logo left, hamburger right
+//   SheetContent w-3/4 sm:max-w-sm     →  drawer 75% width, max 384px
+//   SheetOverlay bg-black/10           →  semi-transparent backdrop
+//   XIcon close button                →  top-right corner
+// ============================================================
+
+.kkux-mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.5rem;
+  padding: 0 1.5rem;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+  }
+
+  // Logo in mobile: matches PlatformLogo size-12 (48px)
+  .kkux-header__logo,
+  a {
+    display: flex !important;
+    align-items: center;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  img {
+    height: 2.25rem !important;
+    width: auto !important;
+  }
+
+  // Hamburger button: matches Button variant="outline" size="icon" (size-8 = 32px)
+  &__hamburger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: #333;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    &:hover,
+    &:focus {
+      background: #f3f4f6;
+    }
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+
+// ---- Drawer + Overlay (matches Sheet + SheetOverlay) ----
+.kkux-mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  pointer-events: none;
+  visibility: hidden;
+
+  &--open {
+    pointer-events: auto;
+    visibility: visible;
+
+    .kkux-mobile-drawer__overlay {
+      opacity: 1 !important;
+    }
+
+    .kkux-mobile-drawer__sheet {
+      transform: none !important;
+    }
+  }
+
+  // Overlay: matches SheetOverlay bg-black/10 backdrop-blur-xs
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.1s ease;
+  }
+
+  // Sheet: matches SheetContent w-3/4 sm:max-w-sm, shadow-lg, duration-200
+  &__sheet {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-end: 0;
+    width: 75%;
+    max-width: 24rem;
+    background: #fff;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.2s ease;
+    font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
+  }
+
+  // Brand X icon: matches KKUxXIcon size-8 text-pillar-700 (SheetHeader)
+  &__brand {
+    padding: 1rem 1rem 0;
+
+    a {
+      display: inline-flex;
+      color: #007359;  // pillar-700
+    }
+
+    svg {
+      display: block;
+    }
+  }
+
+  // Close button at top-right (matches marketing site SheetClose)
+  &__close {
+    position: absolute;
+    inset-inline-end: 0.75rem;
+    top: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: none;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: #333;
+    cursor: pointer;
+    z-index: 1;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  // Actions row: language switcher + user toggle side by side
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  // Logged-out items wrapper in actions row
+  &__logged-out {
+    display: flex;
+    flex: 1;
+    gap: 0.25rem;
+  }
+
+  // User section (collapsible menu below actions row)
+  &__user {
+    padding: 0 1rem 0.5rem;
+  }
+
+  // Toggle button: matches DropdownMenuTrigger ghost button in mobile drawer
+  &__user-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: #333;
+    font-family: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+
+    svg {
+      flex-shrink: 0;
+      color: #999;
+    }
+  }
+
+  &__username {
+    flex: 1;
+    text-align: start;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+  // Chevron: rotates 180deg when open (matches Marketing ChevronDown)
+  &__chevron {
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  // Collapsible menu: hidden by default, slides open
+  &__user-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+    padding: 0 0.5rem;
+
+    &--open {
+      max-height: 20rem;
+    }
+  }
+
+  &__user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  &__username {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  // User menu items
+  &__item {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    color: #333;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    margin: 0.125rem 0;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+
+    &--active {
+      color: #007359 !important;
+      font-weight: 500;
+    }
+
+    &--disabled {
+      color: #999 !important;
+      cursor: default;
+      pointer-events: none;
+      &:hover { background: transparent; }
+    }
+
+    &--destructive {
+      color: #d92d20 !important;
+      &:hover { background: rgba(217, 45, 32, 0.08); }
+    }
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #888;
+    padding: 0.25rem 0.75rem;
+  }
+
+  &__separator {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 0.25rem 0;
+  }
+
+  // Nav section: matches px-4 pt-3 pb-2
+  &__nav {
+    flex: 1;
+    padding: 0.75rem 1rem 0.5rem;
+  }
+}
+
+// ---- Mobile nav links ----
+.kkux-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  &__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    color: #333;
+    text-decoration: none;
+    border-radius: 0.375rem;
+    min-height: 2.5rem;
+    transition: background-color 0.15s;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+
+    &--active {
+      position: relative;
+      color: #fff !important;
+      background: #007359 !important;
+
+      &:hover {
+        background: #005c47 !important;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 0.375rem;
+        width: 83.33%;
+        border-radius: 9999px;
+        background: rgba(3, 254, 150, 0.5);
+      }
+    }
+
+    &--disabled {
+      color: #9ca3af !important;
+      cursor: default;
+      pointer-events: none;
+      &:hover { background: transparent; }
+    }
+  }
+}
+
+// ============================================================
+// Legacy helpers
+// ============================================================
+
+// Prevent sticky header from overlapping iframe content (instructor, units)
+.unit-iframe-wrapper {
+  padding-top: 3.5rem;
+}
+
+.dropdown-item a { text-decoration: none; }
+.icon-button {
+  display: inline-flex; line-height: 3rem; background: transparent;
+  vertical-align: middle; text-align: center; border: none;
+  height: 3rem; width: 3rem; padding: .75rem;
+  justify-content: center; align-items: center;
+  &:hover, &:focus { background: rgba(0,0,0,.1); }
+}
+.learning-header {
+  min-width: 0;
+  .course-title-lockup {
+    min-width: 0;
+    span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  }
+  .user-dropdown .btn { height: 3rem; }
+}
+.site-header-mobile, .site-header-desktop { position: relative; z-index: 1000; }
+.site-header-mobile {
+  height: 3rem; .nav-link { text-decoration: none; cursor: pointer; } img { height: 1.5rem; }
+}
+.site-header-desktop {
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.1); background: var(--pgn-color-white,$white);
+  .nav-link { text-decoration: none; }
+  .logo { display: block; box-sizing: content-box; position: relative; top: -.05em; height: 1.75rem; padding: 1rem 0; margin-right: 1rem; img { display: block; height: 100%; } }
+  .secondary-menu-container {
+    .nav-link:hover, .nav-link:focus, .nav-link.active, .expanded .nav-link { background: $component-active-bg; color: $component-active-color; }
+  }
+  .main-nav {
+    .nav-link { padding: 1.125rem 1rem; text-decoration: none; font-weight: 500; letter-spacing: .01em; }
+    .nav-link:hover, .nav-link:focus, .nav-link.active, .expanded .nav-link { background: $component-active-bg; color: $component-active-color; }
+    .menu { position: static; .menu-content { border-top: solid 2px $component-active-bg; left: 0; right: 0; box-shadow: 0 1px 2px rgba(0,0,0,.25); border-radius: 0 0 2px 2px; padding: 1rem; } }
+  }
+  .search-input { border-radius: $rounded-pill; }
 }
