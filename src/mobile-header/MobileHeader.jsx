@@ -94,7 +94,7 @@ const MobileHeader = ({
 
             {/* Brand X icon (matches SheetHeader > SheetTitle > KKUxXIcon size-8) */}
             <div className="kkux-mobile-drawer__brand">
-              <a href={`${getConfig().LMS_BASE_URL}/dashboard`} aria-label="KKUx">
+              <a href={getConfig().MARKETING_SITE_BASE_URL || `${getConfig().LMS_BASE_URL}/dashboard`} aria-label="KKUx">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 80 54" width="32" height="32" aria-hidden="true">
                   <path d="M42.8545 20.34L46.01 24.3C48.0738 24.92 50.2253 25.23 52.4325 25.23C65.1182 25.23 75.8277 14.58 79.1904 0.0199986V0H54.4405C54.4405 0 54.4405 -1.44914e-06 54.4405 0.0199986C52.5919 8.39 48.4244 15.54 42.8545 20.33V20.34Z" fill="url(#kkux-mobile-x-grad1)" />
                   <path d="M0 53.4895H24.7578C26.6065 45.1095 30.774 37.9395 36.3439 33.1695L33.1884 29.1995C31.1245 28.5795 28.9651 28.2695 26.7659 28.2695C14.0722 28.2695 3.36266 38.9195 0 53.4895Z" fill="url(#kkux-mobile-x-grad2)" />

@@ -22,6 +22,7 @@ ensureConfig([
   'LOGIN_URL',
   'SITE_NAME',
   'LOGO_URL',
+  'MARKETING_SITE_BASE_URL',
   'ORDER_HISTORY_URL',
   'KKUX_INVOICES_URL',
 ], 'Header component');
@@ -117,7 +118,7 @@ const Header = ({
   const props = {
     logo: config.LOGO_URL,
     logoAltText: config.SITE_NAME,
-    logoDestination: `${config.LMS_BASE_URL}/dashboard`,
+    logoDestination: config.MARKETING_SITE_BASE_URL || `${config.LMS_BASE_URL}/dashboard`,
     loggedIn: authenticatedUser !== null,
     username: authenticatedUser !== null ? authenticatedUser.username : null,
     avatar: authenticatedUser !== null ? authenticatedUser.avatar : null,

@@ -10,7 +10,6 @@ import AuthenticatedUserDropdown from './AuthenticatedUserDropdown';
 import CourseInfoSlot from '../plugin-slots/CourseInfoSlot';
 import { courseInfoDataShape } from './LearningHeaderCourseInfo';
 import { messages, arMessages } from './messages';
-import LearningHelpSlot from '../plugin-slots/LearningHelpSlot';
 import MobileHeader from '../mobile-header/MobileHeader';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import headerMessages from '../Header.messages';
@@ -43,7 +42,7 @@ const LearningHeader = ({
         <MobileHeader
           logo={getConfig().LOGO_URL}
           logoAltText={getConfig().SITE_NAME}
-          logoDestination={`${getConfig().LMS_BASE_URL}/dashboard`}
+          logoDestination={getConfig().MARKETING_SITE_BASE_URL || `${getConfig().LMS_BASE_URL}/dashboard`}
           loggedIn={!!authenticatedUser}
           username={authenticatedUser?.username}
           mainMenu={[]}
@@ -67,7 +66,7 @@ const LearningHeader = ({
           <div className="kkux-header__inner">
             {/* Logo — matches PlatformLogo size-18 (72px) from marketing site */}
             <a
-              href={`${getConfig().LMS_BASE_URL}/dashboard`}
+              href={getConfig().MARKETING_SITE_BASE_URL || `${getConfig().LMS_BASE_URL}/dashboard`}
               className="kkux-header__logo"
             >
               <img src={getConfig().LOGO_URL} alt={getConfig().SITE_NAME} />
@@ -78,12 +77,11 @@ const LearningHeader = ({
               <CourseInfoSlot courseOrg={courseOrg} courseNumber={courseNumber} courseTitle={courseTitle} />
             </div>
 
-            {/* Actions: language switcher + help + user dropdown or login */}
+            {/* Actions: language switcher + user dropdown or login */}
             <div className="kkux-header__actions">
               <LanguageSwitcher />
               {showUserDropdown && authenticatedUser && (
                 <>
-                  <LearningHelpSlot />
                   <AuthenticatedUserDropdown
                     username={authenticatedUser.username}
                     t={t}
