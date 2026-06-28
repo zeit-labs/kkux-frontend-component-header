@@ -7,11 +7,15 @@ import LearningUserMenuSlot from '../plugin-slots/LearningUserMenuSlot';
 import { messages } from './messages';
 
 const AuthenticatedUserDropdown = ({ t, username }) => {
-  const invoiceUrl = getConfig().ORDER_HISTORY_URL || getConfig().KKUX_INVOICES_URL;
+  const config = getConfig();
+  const rawOrdersUrl = config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL;
+  const invoiceUrl = rawOrdersUrl && (
+    rawOrdersUrl.startsWith('http') ? rawOrdersUrl : `${config.LMS_BASE_URL.replace(/\/+$/, '')}${rawOrdersUrl}`
+  );
   const dropdownItems = [
-    { message: t(messages.myCourses), href: `${getConfig().LMS_BASE_URL}/dashboard` },
+    { message: t(messages.myCourses), href: `${config.LMS_BASE_URL.replace(/\/+$/, '')}/dashboard` },
     ...(invoiceUrl ? [{ message: t(messages.orders), href: invoiceUrl }] : []),
-    { message: t(messages.logout), href: getConfig().LOGOUT_URL },
+    { message: t(messages.logout), href: config.LOGOUT_URL },
   ];
 
   return (
