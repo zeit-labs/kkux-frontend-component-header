@@ -1,49 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { getConfig } from '@edx/frontend-platform';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { Dropdown } from '@openedx/paragon';
 
 import LearningUserMenuSlot from '../plugin-slots/LearningUserMenuSlot';
+import { messages } from './messages';
 
-import messages from './messages';
-
-const AuthenticatedUserDropdown = ({ intl, username }) => {
+const AuthenticatedUserDropdown = ({ t, username }) => {
+  const config = getConfig();
+  const rawOrdersUrl = config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL;
+  const invoiceUrl = rawOrdersUrl && (
+    rawOrdersUrl.startsWith('http') ? rawOrdersUrl : `${config.LMS_BASE_URL.replace(/\/+$/, '')}${rawOrdersUrl}`
+  );
   const dropdownItems = [
-    {
-      message: intl.formatMessage(messages.dashboard),
-      href: `${getConfig().LMS_BASE_URL}/dashboard`,
-    },
-    {
-      message: intl.formatMessage(messages.profile),
-      href: `${getConfig().ACCOUNT_PROFILE_URL}/u/${username}`,
-    },
-    {
-      message: intl.formatMessage(messages.account),
-      href: getConfig().ACCOUNT_SETTINGS_URL,
-    },
-    ...(getConfig().ORDER_HISTORY_URL ? [{
-      message: intl.formatMessage(messages.orderHistory),
-      href: getConfig().ORDER_HISTORY_URL,
-    }] : []),
-    {
-      message: intl.formatMessage(messages.signOut),
-      href: getConfig().LOGOUT_URL,
-    },
+    { message: t(messages.myCourses), href: `${config.LMS_BASE_URL.replace(/\/+$/, '')}/dashboard` },
+    ...(invoiceUrl ? [{ message: t(messages.orders), href: invoiceUrl }] : []),
+    { message: t(messages.logout), href: config.LOGOUT_URL },
   ];
 
   return (
-    <Dropdown className="user-dropdown ml-3">
+    <Dropdown className="kkux-user-dropdown">
       <Dropdown.Toggle variant="outline-primary">
-        <FontAwesomeIcon icon={faUserCircle} className="d-md-none" size="lg" />
-        <span data-hj-suppress className="d-none d-md-inline">
-          {username}
-        </span>
+        {/* User avatar icon (matches marketing site UserIcon) */}
+        <svg className="kkux-user-dropdown__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="8" r="4" fill="currentColor" />
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" strokeWidth="2" fill="none" />
+        </svg>
+        <span className="kkux-user-dropdown__name">{username}</span>
+        {/* Chevron down (matches marketing site ChevronDown) */}
+        <svg className="kkux-user-dropdown__chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </Dropdown.Toggle>
-      <Dropdown.Menu className="dropdown-menu-right">
+      <Dropdown.Menu className="kkux-user-dropdown__menu">
+        <div className="kkux-user-dropdown__label">{username}</div>
         <LearningUserMenuSlot items={dropdownItems} />
       </Dropdown.Menu>
     </Dropdown>
@@ -51,8 +41,8 @@ const AuthenticatedUserDropdown = ({ intl, username }) => {
 };
 
 AuthenticatedUserDropdown.propTypes = {
-  intl: intlShape.isRequired,
+  t: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
 };
 
-export default injectIntl(AuthenticatedUserDropdown);
+export default AuthenticatedUserDropdown;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import Responsive from 'react-responsive';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import DesktopHeaderSlot from './plugin-slots/DesktopHeaderSlot';
 import MobileHeaderSlot from './plugin-slots/MobileHeaderSlot';
 
-import messages from './Header.messages';
+import messages, { arMessages } from './Header.messages';
 
 ensureConfig([
   'LMS_BASE_URL',
@@ -22,7 +22,9 @@ ensureConfig([
   'LOGIN_URL',
   'SITE_NAME',
   'LOGO_URL',
+  'MARKETING_SITE_BASE_URL',
   'ORDER_HISTORY_URL',
+  'KKUX_INVOICES_URL',
 ], 'Header component');
 
 subscribe(APP_CONFIG_INITIALIZED, () => {
@@ -50,6 +52,29 @@ const Header = ({
   intl, mainMenuItems, secondaryMenuItems, userMenuItems,
 }) => {
   const { authenticatedUser, config } = useContext(AppContext);
+  const isArabic = useMemo(() => (
+    intl.locale && intl.locale.startsWith('ar')
+  ) || (
+    typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
+  ), [intl.locale]);
+
+  const ordersUrl = useMemo(() => {
+    const raw = config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL;
+    if (!raw) return raw;
+    if (raw.startsWith('http')) return raw;
+    return `${config.LMS_BASE_URL.replace(/\/+$/, '')}${raw}`;
+  }, [config.ORDER_HISTORY_URL, config.KKUX_INVOICES_URL, config.LMS_BASE_URL]);
+
+  const t = (msg, values) => {
+    if (isArabic && arMessages[msg.id]) {
+      let text = arMessages[msg.id];
+      if (values) {
+        Object.keys(values).forEach((key) => { text = text.replace(`{${key}}`, values[key]); });
+      }
+      return text;
+    }
+    return intl.formatMessage(msg, values);
+  };
 
   const defaultMainMenu = [
     {
@@ -59,40 +84,30 @@ const Header = ({
     },
   ];
   const defaultUserMenu = authenticatedUser === null ? [] : [{
-    heading: '',
+    heading: authenticatedUser.username,
     items: [
       {
         type: 'item',
         href: `${config.LMS_BASE_URL}/dashboard`,
-        content: intl.formatMessage(messages['header.user.menu.dashboard']),
+        content: t(messages['header.user.menu.dashboard']),
       },
-      {
+      ...(ordersUrl ? [{
         type: 'item',
-        href: `${config.ACCOUNT_PROFILE_URL}/u/${authenticatedUser.username}`,
-        content: intl.formatMessage(messages['header.user.menu.profile']),
-      },
-      {
-        type: 'item',
-        href: config.ACCOUNT_SETTINGS_URL,
-        content: intl.formatMessage(messages['header.user.menu.account.settings']),
-      },
-      // Users should only see Order History if have a ORDER_HISTORY_URL define in the environment.
-      ...(config.ORDER_HISTORY_URL ? [{
-        type: 'item',
-        href: config.ORDER_HISTORY_URL,
-        content: intl.formatMessage(messages['header.user.menu.order.history']),
+        href: ordersUrl,
+        content: t(messages['header.user.menu.order.history']),
       }] : []),
       {
         type: 'item',
         href: config.LOGOUT_URL,
-        content: intl.formatMessage(messages['header.user.menu.logout']),
+        content: t(messages['header.user.menu.logout']),
+        variant: 'destructive',
       },
     ],
   }];
 
   const mainMenu = mainMenuItems || defaultMainMenu;
   const secondaryMenu = secondaryMenuItems || [];
-  const userMenu = authenticatedUser === null ? [] : userMenuItems || defaultUserMenu;
+  const userMenu = authenticatedUser === null ? [] : defaultUserMenu;
 
   const loggedOutItems = [
     {
@@ -110,7 +125,7 @@ const Header = ({
   const props = {
     logo: config.LOGO_URL,
     logoAltText: config.SITE_NAME,
-    logoDestination: `${config.LMS_BASE_URL}/dashboard`,
+    logoDestination: config.MARKETING_SITE_BASE_URL || `${config.LMS_BASE_URL}/dashboard`,
     loggedIn: authenticatedUser !== null,
     username: authenticatedUser !== null ? authenticatedUser.username : null,
     avatar: authenticatedUser !== null ? authenticatedUser.avatar : null,
