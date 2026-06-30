@@ -58,6 +58,13 @@ const Header = ({
     typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
   ), [intl.locale]);
 
+  const ordersUrl = useMemo(() => {
+    const raw = config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL;
+    if (!raw) return raw;
+    if (raw.startsWith('http')) return raw;
+    return `${config.LMS_BASE_URL.replace(/\/+$/, '')}${raw}`;
+  }, [config.ORDER_HISTORY_URL, config.KKUX_INVOICES_URL, config.LMS_BASE_URL]);
+
   const t = (msg, values) => {
     if (isArabic && arMessages[msg.id]) {
       let text = arMessages[msg.id];
@@ -84,9 +91,9 @@ const Header = ({
         href: `${config.LMS_BASE_URL}/dashboard`,
         content: t(messages['header.user.menu.dashboard']),
       },
-      ...(config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL ? [{
+      ...(ordersUrl ? [{
         type: 'item',
-        href: config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL,
+        href: ordersUrl,
         content: t(messages['header.user.menu.order.history']),
       }] : []),
       {
