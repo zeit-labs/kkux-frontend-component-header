@@ -118,7 +118,7 @@ const arMessages = {
   'header.links.programs': '\u0627\u0644\u0628\u0631\u0627\u0645\u062c',
   'header.links.content.search': '\u0627\u0643\u062a\u0634\u0641 \u0627\u0644\u062c\u062f\u064a\u062f',
   'header.links.schools': '\u0627\u0644\u0645\u062f\u0627\u0631\u0633 \u0648\u0627\u0644\u0634\u0631\u0643\u0627\u0621',
-  'header.user.menu.dashboard': '\u0628\u0631\u0627\u0645\u062c\u064a',
+  'header.user.menu.dashboard': 'برامجي',
   'header.user.menu.order.history': '\u0637\u0644\u0628\u0627\u062a\u064a',
   'header.user.menu.logout': '\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062e\u0631\u0648\u062c',
   'header.user.menu.login': '\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644',

@@ -43,7 +43,7 @@ const genericMessages = defineMessages({
 });
 
 const arMessages = {
-  'header.menu.myCourses.label': '\u0628\u0631\u0627\u0645\u062c\u064a',
+  'header.menu.myCourses.label': 'برامجي',
   'header.menu.logout.label': '\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062e\u0631\u0648\u062c',
   'header.menu.orders.label': '\u0637\u0644\u0628\u0627\u062a\u064a',
   'header.help.label': '\u0645\u0633\u0627\u0639\u062f\u0629',
