@@ -3,7 +3,7 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 const messages = defineMessages({
   myCourses: {
     id: 'header.menu.myCourses.label',
-    defaultMessage: 'My Courses',
+    defaultMessage: 'My Programs',
     description: 'User menu My Courses link.',
   },
   logout: {

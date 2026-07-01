@@ -23,7 +23,7 @@ const messages = defineMessages({
   },
   'header.user.menu.dashboard': {
     id: 'header.user.menu.dashboard',
-    defaultMessage: 'My Courses',
+    defaultMessage: 'My Programs',
     description: 'Link to the user dashboard / my courses',
   },
   'header.user.menu.profile': {
