@@ -15,7 +15,7 @@ $rounded-pill: 50rem  !default;
 // Marketing site mapping:
 //   bg-white px-6 sm:px-0  →  background + padding
 //   sticky top-0 z-50       →  position + z-index
-//   container mx-auto        →  max-w-7xl + mx-auto
+//   container mx-auto        →  max-w-[1536px] + mx-auto (= 96rem)
 //   size-18                  →  72px (logo)
 //   Button size="xl"         →  h-13 (52px) nav items
 //   Button variant="ghost"   →  NO border, hover:bg-[#f3f4f6]
@@ -38,38 +38,49 @@ $rounded-pill: 50rem  !default;
 
   a, .nav-link { font-family: inherit; }
 
-  // Container: matches marketing site <div className="container mx-auto">
+  // Container: matches marketing site <div className="container mx-auto"> = 1536px
   &__inner {
     display: flex;
     align-items: center;
-    height: 3.5rem;
-    max-width: 80rem;         // max-w-7xl
+    height: 4.5rem;            // 72px — matches marketing site navbar height
+    max-width: 96rem;          // 1536px — matches marketing site container
     margin: 0 auto;
     gap: 1.5rem;              // gap-6
     padding: 0;
   }
 
-  // Logo: matches PlatformLogo size-18 (72px)
-  // Override Bootstrap .logo styles
+  // Logo: matches PlatformLogo size-18 (72×72)
+  // Override Bootstrap .logo styles.
+  // Note: DesktopHeader wraps <a> in <div class="kkux-header__logo">,
+  //       LearningHeader puts the class directly on <a>.
   &__logo {
     flex-shrink: 0;
     display: flex;
     align-items: center;
 
+    // Applies whether the class is on a wrapping div (DesktopHeader)
+    // or directly on the <a> itself (LearningHeader).
+    &.logo, &.kkux-header__logo,
     a.logo, a {
       display: flex !important;
       align-items: center;
-      height: auto !important;
+      justify-content: center;
+      width: 4.5rem !important;   // 72px
+      height: 4.5rem !important;  // 72px
       padding: 0 !important;
       margin: 0 !important;
       text-decoration: none;
       box-sizing: content-box;
       position: static;
+      overflow: hidden;
     }
 
     img {
-      height: 2.25rem !important;  // 48px in 72px bar
-      width: auto !important;
+      height: 100% !important;   // fill 72px box
+      width: 100% !important;    // fill 72px box
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
       display: block;
     }
   }
@@ -373,7 +384,7 @@ $rounded-pill: 50rem  !default;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 3.5rem;
+  height: 4.5rem;             // 72px — matches marketing site mobile navbar height
   padding: 0 1.5rem;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -385,19 +396,27 @@ $rounded-pill: 50rem  !default;
     z-index: 1050;
   }
 
-  // Logo in mobile: matches PlatformLogo size-12 (48px)
+  // Logo in mobile: matches PlatformLogo size-18 (72×72)
+  // Same dual-structure fix as desktop: class can be on <div> or <a>.
   .kkux-header__logo,
+  &.kkux-header__logo,
   a {
     display: flex !important;
     align-items: center;
-    height: auto !important;
+    justify-content: center;
+    width: 4.5rem !important;   // 72px
+    height: 4.5rem !important;  // 72px
     padding: 0 !important;
     margin: 0 !important;
+    overflow: hidden;
   }
 
   img {
-    height: 2.25rem !important;
-    width: auto !important;
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   // Hamburger button: matches Button variant="outline" size="icon" (size-8 = 32px)
@@ -719,7 +738,7 @@ $rounded-pill: 50rem  !default;
 
 // Prevent sticky header from overlapping iframe content (instructor, units)
 .unit-iframe-wrapper {
-  padding-top: 3.5rem;
+  padding-top: 4.5rem;
 }
 
 .dropdown-item a { text-decoration: none; }
