@@ -84,7 +84,7 @@ const Header = ({
     },
   ];
   const defaultUserMenu = authenticatedUser === null ? [] : [{
-    heading: authenticatedUser.username,
+    heading: authenticatedUser.name,
     items: [
       {
         type: 'item',
