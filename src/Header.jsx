@@ -76,11 +76,35 @@ const Header = ({
     return intl.formatMessage(msg, values);
   };
 
+  const marketingBase = (config.MARKETING_SITE_BASE_URL || '').replace(/\/+$/, '');
+  const isOnDashboard = typeof window !== 'undefined' && (
+    window.location.pathname === '/dashboard'
+    || window.location.pathname.startsWith('/dashboard/')
+    || window.location.pathname === '/learner-dashboard'
+    || window.location.pathname.startsWith('/learner-dashboard/')
+  );
+
   const defaultMainMenu = [
     {
       type: 'item',
       href: `${config.LMS_BASE_URL}/dashboard`,
-      content: intl.formatMessage(messages['header.links.courses']),
+      content: t(messages['header.links.myPrograms']),
+      isActive: isOnDashboard,
+    },
+    {
+      type: 'item',
+      href: `${marketingBase}/diplomas`,
+      content: t(messages['header.links.diplomas']),
+    },
+    {
+      type: 'item',
+      href: `${marketingBase}/about`,
+      content: t(messages['header.links.about']),
+    },
+    {
+      type: 'item',
+      href: `${marketingBase}/contact-us`,
+      content: t(messages['header.links.contact']),
     },
   ];
   const defaultUserMenu = authenticatedUser === null ? [] : [{
