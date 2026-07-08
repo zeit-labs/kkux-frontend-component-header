@@ -107,7 +107,19 @@ const Header = ({
 
   const mainMenu = mainMenuItems || defaultMainMenu;
   const secondaryMenu = secondaryMenuItems || [];
-  const userMenu = authenticatedUser === null ? [] : defaultUserMenu;
+  // KKUx: force the user-menu heading to the learner's full name (JWT `name`
+  // claim) regardless of whether the consumer passed a `userMenuItems` prop
+  // with its own (possibly empty) heading. The full name gives learners a
+  // recognisable label in the dropdown instead of the opaque login handle.
+  const baseUserMenu = userMenuItems || defaultUserMenu;
+  const userMenu = authenticatedUser === null
+    ? []
+    : baseUserMenu.map((entry, index) => {
+      if (index === 0) {
+        return { ...entry, heading: authenticatedUser.name || authenticatedUser.username || '' };
+      }
+      return entry;
+    });
 
   const loggedOutItems = [
     {
@@ -127,7 +139,11 @@ const Header = ({
     logoAltText: config.SITE_NAME,
     logoDestination: config.MARKETING_SITE_BASE_URL || `${config.LMS_BASE_URL}/dashboard`,
     loggedIn: authenticatedUser !== null,
-    username: authenticatedUser !== null ? authenticatedUser.username : null,
+    // KKUx: prefer the JWT `name` claim (full display name) over the
+    // opaque `username` so the user-menu trigger shows the learner's name.
+    username: authenticatedUser !== null
+      ? (authenticatedUser.name || authenticatedUser.username)
+      : null,
     avatar: authenticatedUser !== null ? authenticatedUser.avatar : null,
     mainMenu: getConfig().AUTHN_MINIMAL_HEADER ? [] : mainMenu,
     secondaryMenu: getConfig().AUTHN_MINIMAL_HEADER ? [] : secondaryMenu,
