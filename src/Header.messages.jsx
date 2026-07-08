@@ -6,6 +6,11 @@ const messages = defineMessages({
     defaultMessage: 'My Programs',
     description: 'Link to the learner dashboard / my programs',
   },
+  'header.links.home': {
+    id: 'header.links.home',
+    defaultMessage: 'Home',
+    description: 'Link to the marketing site home page',
+  },
   'header.links.diplomas': {
     id: 'header.links.diplomas',
     defaultMessage: 'Diplomas',
@@ -125,6 +130,7 @@ const messages = defineMessages({
 
 const arMessages = {
   'header.links.myPrograms': '\u0628\u0631\u0627\u0645\u062c\u064a',
+  'header.links.home': '\u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629',
   'header.links.diplomas': '\u0627\u0644\u062f\u0628\u0644\u0648\u0645\u0627\u062a \u0627\u0644\u0645\u0647\u0646\u064a\u0629',
   'header.links.about': '\u0642\u0635\u0629 KKUx',
   'header.links.contact': '\u062a\u0648\u0627\u0635\u0644 \u0645\u0639\u0646\u0627',

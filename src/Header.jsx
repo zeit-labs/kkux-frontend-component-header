@@ -93,6 +93,16 @@ const Header = ({
     },
     {
       type: 'item',
+      href: `${marketingBase}/`,
+      content: t(messages['header.links.home']),
+    },
+    {
+      type: 'item',
+      href: `${marketingBase}/programs`,
+      content: t(messages['header.links.programs']),
+    },
+    {
+      type: 'item',
       href: `${marketingBase}/diplomas`,
       content: t(messages['header.links.diplomas']),
     },

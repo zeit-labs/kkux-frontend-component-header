@@ -46,7 +46,7 @@ $rounded-pill: 50rem  !default;
     max-width: 96rem;          // 1536px — matches marketing site container
     margin: 0 auto;
     gap: 1.5rem;              // gap-6
-    padding: 0;
+    padding: 0 1rem;          // breathing room on tablets/desktops so logo doesn't touch edge
   }
 
   // Logo: matches PlatformLogo size-18 (72×72)
