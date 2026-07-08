@@ -76,11 +76,35 @@ const Header = ({
     return intl.formatMessage(msg, values);
   };
 
+  const marketingBase = (config.MARKETING_SITE_BASE_URL || '').replace(/\/+$/, '');
+  const isOnDashboard = typeof window !== 'undefined' && (
+    window.location.pathname === '/dashboard'
+    || window.location.pathname.startsWith('/dashboard/')
+    || window.location.pathname === '/learner-dashboard'
+    || window.location.pathname.startsWith('/learner-dashboard/')
+  );
+
   const defaultMainMenu = [
     {
       type: 'item',
       href: `${config.LMS_BASE_URL}/dashboard`,
-      content: intl.formatMessage(messages['header.links.courses']),
+      content: t(messages['header.links.myPrograms']),
+      isActive: isOnDashboard,
+    },
+    {
+      type: 'item',
+      href: `${marketingBase}/diplomas`,
+      content: t(messages['header.links.diplomas']),
+    },
+    {
+      type: 'item',
+      href: `${marketingBase}/about`,
+      content: t(messages['header.links.about']),
+    },
+    {
+      type: 'item',
+      href: `${marketingBase}/contact-us`,
+      content: t(messages['header.links.contact']),
     },
   ];
   const defaultUserMenu = authenticatedUser === null ? [] : [{
@@ -105,21 +129,16 @@ const Header = ({
     ],
   }];
 
-  const mainMenu = mainMenuItems || defaultMainMenu;
-  const secondaryMenu = secondaryMenuItems || [];
-  // KKUx: force the user-menu heading to the learner's full name (JWT `name`
-  // claim) regardless of whether the consumer passed a `userMenuItems` prop
-  // with its own (possibly empty) heading. The full name gives learners a
-  // recognisable label in the dropdown instead of the opaque login handle.
-  const baseUserMenu = userMenuItems || defaultUserMenu;
-  const userMenu = authenticatedUser === null
-    ? []
-    : baseUserMenu.map((entry, index) => {
-      if (index === 0) {
-        return { ...entry, heading: authenticatedUser.name || authenticatedUser.username || '' };
-      }
-      return entry;
-    });
+  // KKUx: always render the KKUx marketing-site-aligned navigation, regardless
+  // of what mainMenuItems / secondaryMenuItems / userMenuItems the consumer
+  // passes. KKUx header is a single component used across all MFEs and the
+  // consumer-supplied menus (e.g. frontend-app-learner-dashboard's
+  // LearnerDashboardMenu which renders Courses / Programs / Discover New)
+  // are out of sync with the brand. The props stay on the public API for
+  // backward-compatibility but are deliberately never forwarded.
+  const mainMenu = defaultMainMenu;
+  const secondaryMenu = [];
+  const userMenu = authenticatedUser === null ? [] : defaultUserMenu;
 
   const loggedOutItems = [
     {

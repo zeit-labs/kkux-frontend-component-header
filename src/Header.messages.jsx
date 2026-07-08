@@ -1,20 +1,30 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
 const messages = defineMessages({
-  'header.links.courses': {
-    id: 'header.links.courses',
-    defaultMessage: 'Courses',
-    description: 'Link to the learner course dashboard',
+  'header.links.myPrograms': {
+    id: 'header.links.myPrograms',
+    defaultMessage: 'My Programs',
+    description: 'Link to the learner dashboard / my programs',
+  },
+  'header.links.diplomas': {
+    id: 'header.links.diplomas',
+    defaultMessage: 'Diplomas',
+    description: 'Link to the diplomas landing page on the marketing site',
+  },
+  'header.links.about': {
+    id: 'header.links.about',
+    defaultMessage: 'About KKUx',
+    description: 'Link to the about / story page on the marketing site',
+  },
+  'header.links.contact': {
+    id: 'header.links.contact',
+    defaultMessage: 'Contact Us',
+    description: 'Link to the contact us page on the marketing site',
   },
   'header.links.programs': {
     id: 'header.links.programs',
     defaultMessage: 'Programs',
     description: 'Link to the learner program dashboard',
-  },
-  'header.links.content.search': {
-    id: 'header.links.content.search',
-    defaultMessage: 'Discover New',
-    description: 'Link to the content search page',
   },
   'header.links.schools': {
     id: 'header.links.schools',
@@ -114,9 +124,11 @@ const messages = defineMessages({
 });
 
 const arMessages = {
-  'header.links.courses': '\u0627\u0644\u0645\u0633\u0627\u0642\u0627\u062a',
+  'header.links.myPrograms': '\u0628\u0631\u0627\u0645\u062c\u064a',
+  'header.links.diplomas': '\u0627\u0644\u062f\u0628\u0644\u0648\u0645\u0627\u062a \u0627\u0644\u0645\u0647\u0646\u064a\u0629',
+  'header.links.about': '\u0642\u0635\u0629 KKUx',
+  'header.links.contact': '\u062a\u0648\u0627\u0635\u0644 \u0645\u0639\u0646\u0627',
   'header.links.programs': '\u0627\u0644\u0628\u0631\u0627\u0645\u062c',
-  'header.links.content.search': '\u0627\u0643\u062a\u0634\u0641 \u0627\u0644\u062c\u062f\u064a\u062f',
   'header.links.schools': '\u0627\u0644\u0645\u062f\u0627\u0631\u0633 \u0648\u0627\u0644\u0634\u0631\u0643\u0627\u0621',
   'header.user.menu.dashboard': '\u0628\u0631\u0627\u0645\u062c\u064a',
   'header.user.menu.order.history': '\u0637\u0644\u0628\u0627\u062a\u064a',
