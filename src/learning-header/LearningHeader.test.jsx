@@ -10,9 +10,12 @@ describe('Header', () => {
     await initializeMockApp();
   });
 
-  it('displays user button', () => {
+  it('displays user button with full name', () => {
     render(<Header />);
-    expect(screen.getByText(authenticatedUser.username)).toBeInTheDocument();
+    // Prefer the JWT `name` claim (full display name) over the opaque
+    // `username` so the learner sees their real name in the dropdown trigger.
+    // Falls back to `username` only when the JWT has no `name` claim.
+    expect(screen.getByText(authenticatedUser.name)).toBeInTheDocument();
   });
 
   it('displays course data', () => {

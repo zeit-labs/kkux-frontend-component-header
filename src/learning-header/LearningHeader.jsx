@@ -44,10 +44,10 @@ const LearningHeader = ({
           logoAltText={getConfig().SITE_NAME}
           logoDestination={getConfig().MARKETING_SITE_BASE_URL || `${getConfig().LMS_BASE_URL}/dashboard`}
           loggedIn={!!authenticatedUser}
-          username={authenticatedUser?.username}
+          username={authenticatedUser ? (authenticatedUser.name || authenticatedUser.username) : null}
           mainMenu={[]}
           userMenu={authenticatedUser ? [{
-            heading: authenticatedUser.username,
+            heading: authenticatedUser.name || authenticatedUser.username,
             items: [
               { type: 'item', href: `${getConfig().LMS_BASE_URL}/dashboard`, content: t(messages.myCourses) },
               { type: 'item', href: getConfig().LOGOUT_URL, content: t(messages.logout), variant: 'destructive' },
@@ -83,7 +83,7 @@ const LearningHeader = ({
               {showUserDropdown && authenticatedUser && (
                 <>
                   <AuthenticatedUserDropdown
-                    username={authenticatedUser.username}
+                    username={authenticatedUser.name || authenticatedUser.username}
                     t={t}
                   />
                 </>
