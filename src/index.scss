@@ -282,11 +282,16 @@ $rounded-pill: 50rem  !default;
     // data-[variant=destructive]:focus:text-destructive
     // dark:data-[variant=destructive]:focus:bg-destructive/20
     // data-[variant=destructive]:*:[svg]:text-destructive
-    &--destructive {
-      color: #d92d20 !important;               // text-destructive (Tailwind red-600)
+    //
+    // Marketing-site --destructive is oklch(0.577 0.245 27.325)
+    // which converts to ≈ #d92d20 (sRGB). The HTML marker
+    // `data-variant="destructive"` matches the marketing-site
+    // DropdownMenuItem attribute selector pattern.
+    &[data-variant="destructive"], &--destructive {
+      color: #d92d20 !important;               // text-destructive (oklch(0.577 0.245 27.325))
 
       &:hover, &:focus {
-        background: rgba(217, 45, 32, 0.08);   // bg-destructive/10
+        background: rgba(217, 45, 32, 0.1);    // bg-destructive/10
         color: #d92d20 !important;
       }
 
