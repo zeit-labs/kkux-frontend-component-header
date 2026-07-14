@@ -77,6 +77,11 @@ const Header = ({
   };
 
   const marketingBase = (config.MARKETING_SITE_BASE_URL || '').replace(/\/+$/, '');
+  // KKUx: mirror the marketing-site convention of routing apps-domain URLs
+  // (account, profile) by swapping the www. subdomain for apps. on the
+  // marketing base URL. This matches the openEdXPath(_, isMFE=true) helper
+  // in kkux-marketing-site/src/lib/paths.ts:96-105.
+  const appsBase = marketingBase.replace(/^(https?:\/\/)www\./, '$1apps.');
   const isOnDashboard = typeof window !== 'undefined' && (
     window.location.pathname === '/dashboard'
     || window.location.pathname.startsWith('/dashboard/')
@@ -117,27 +122,49 @@ const Header = ({
       content: t(messages['header.links.contact']),
     },
   ];
-  const defaultUserMenu = authenticatedUser === null ? [] : [{
-    heading: authenticatedUser.name,
-    items: [
-      {
-        type: 'item',
-        href: `${config.LMS_BASE_URL}/dashboard`,
-        content: t(messages['header.user.menu.dashboard']),
-      },
-      ...(ordersUrl ? [{
-        type: 'item',
-        href: ordersUrl,
-        content: t(messages['header.user.menu.order.history']),
-      }] : []),
-      {
-        type: 'item',
-        href: config.LOGOUT_URL,
-        content: t(messages['header.user.menu.logout']),
-        variant: 'destructive',
-      },
-    ],
-  }];
+  const defaultUserMenu = authenticatedUser === null ? [] : [
+    {
+      heading: authenticatedUser.name,
+      items: [
+        {
+          type: 'item',
+          href: `${config.LMS_BASE_URL}/dashboard`,
+          content: t(messages['header.user.menu.dashboard']),
+        },
+        ...(ordersUrl ? [{
+          type: 'item',
+          href: ordersUrl,
+          content: t(messages['header.user.menu.order.history']),
+        }] : []),
+      ],
+    },
+    {
+      heading: null,
+      items: [
+        {
+          type: 'item',
+          href: `${appsBase}/account/`,
+          content: t(messages['header.user.menu.account.settings']),
+        },
+        {
+          type: 'item',
+          href: `${appsBase}/profile/u/${authenticatedUser.username}`,
+          content: t(messages['header.user.menu.profile']),
+        },
+      ],
+    },
+    {
+      heading: null,
+      items: [
+        {
+          type: 'item',
+          href: config.LOGOUT_URL,
+          content: t(messages['header.user.menu.logout']),
+          variant: 'destructive',
+        },
+      ],
+    },
+  ];
 
   // KKUx: always render the KKUx marketing-site-aligned navigation, regardless
   // of what mainMenuItems / secondaryMenuItems / userMenuItems the consumer
