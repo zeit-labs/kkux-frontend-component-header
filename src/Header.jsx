@@ -124,7 +124,7 @@ const Header = ({
   ];
   const defaultUserMenu = authenticatedUser === null ? [] : [
     {
-      heading: authenticatedUser.name,
+      heading: null,
       items: [
         {
           type: 'item',
