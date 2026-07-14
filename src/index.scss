@@ -287,12 +287,27 @@ $rounded-pill: 50rem  !default;
     // which converts to ≈ #d92d20 (sRGB). The HTML marker
     // `data-variant="destructive"` matches the marketing-site
     // DropdownMenuItem attribute selector pattern.
+    //
+    // color: #d92d20 !important on the anchor + the descendant
+    // span + svg so the destructive red can never be shadowed by
+    // a lower-specificity parent rule (the .kkux-header__dropdown
+    // &__label rule below sets color: #555 on .kkux-dropdown__label,
+    // and the MFE has its own a { color: ... } upstream — pinning
+    // every level with !important here is intentional).
     &[data-variant="destructive"], &--destructive {
       color: #d92d20 !important;               // text-destructive (oklch(0.577 0.245 27.325))
+
+      span {
+        color: #d92d20 !important;
+      }
 
       &:hover, &:focus {
         background: rgba(217, 45, 32, 0.1);    // bg-destructive/10
         color: #d92d20 !important;
+
+        span {
+          color: #d92d20 !important;
+        }
       }
 
       svg {
