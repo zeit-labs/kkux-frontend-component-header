@@ -1,21 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
+import { AppContext } from '@edx/frontend-platform/react';
 import { Dropdown } from '@openedx/paragon';
 
 import LearningUserMenuSlot from '../plugin-slots/LearningUserMenuSlot';
 import { messages } from './messages';
 
-const AuthenticatedUserDropdown = ({ t, username }) => {
+const AuthenticatedUserDropdown = ({ t }) => {
   const config = getConfig();
+  const { authenticatedUser } = React.useContext(AppContext);
+  const username = authenticatedUser ? (authenticatedUser.name || authenticatedUser.username) : '';
   const rawOrdersUrl = config.ORDER_HISTORY_URL || config.KKUX_INVOICES_URL;
   const invoiceUrl = rawOrdersUrl && (
     rawOrdersUrl.startsWith('http') ? rawOrdersUrl : `${config.LMS_BASE_URL.replace(/\/+$/, '')}${rawOrdersUrl}`
   );
+  const marketingBase = (config.MARKETING_SITE_BASE_URL || '').replace(/\/+$/, '');
+  // KKUx: mirror the marketing-site convention of routing apps-domain URLs
+  // (account, profile) by swapping the www. subdomain prefix for apps. on
+  // the marketing base URL. Matches the openEdXPath(_, isMFE=true) helper
+  // in kkux-marketing-site/src/lib/paths.ts:96-105.
+  const appsBase = marketingBase.replace(/^(https?:\/\/)www\./, '$1apps.');
+
+  // 3 groups / 5 items / 2 separators — matches kkux-marketing-site
+  // src/components/nav/user-section.tsx structure. Separator markers are
+  // detected by LearningHeaderUserMenuItems which renders <Dropdown.Divider />.
   const dropdownItems = [
+    // Group 1: My Programs, My Orders
     { message: t(messages.myCourses), href: `${config.LMS_BASE_URL.replace(/\/+$/, '')}/dashboard` },
     ...(invoiceUrl ? [{ message: t(messages.orders), href: invoiceUrl }] : []),
-    { message: t(messages.logout), href: config.LOGOUT_URL },
+    { separator: true },
+    // Group 2: Account, Profile
+    { message: t(messages.dashboard), href: `${appsBase}/account/` },
+    { message: t(messages.profile), href: `${appsBase}/profile/u/${username}` },
+    { separator: true },
+    // Group 3: Logout (destructive)
+    { message: t(messages.logout), href: config.LOGOUT_URL, variant: 'destructive' },
   ];
 
   return (
@@ -33,7 +53,6 @@ const AuthenticatedUserDropdown = ({ t, username }) => {
         </svg>
       </Dropdown.Toggle>
       <Dropdown.Menu className="kkux-user-dropdown__menu">
-        <div className="kkux-user-dropdown__label">{username}</div>
         <LearningUserMenuSlot items={dropdownItems} />
       </Dropdown.Menu>
     </Dropdown>
@@ -42,7 +61,6 @@ const AuthenticatedUserDropdown = ({ t, username }) => {
 
 AuthenticatedUserDropdown.propTypes = {
   t: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
 };
 
 export default AuthenticatedUserDropdown;

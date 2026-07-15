@@ -205,45 +205,71 @@ $rounded-pill: 50rem  !default;
       color: #010d09 !important;               // text-popover-foreground ≈ pulse-950
       text-decoration: none !important;
       font-family: inherit;
-      border-radius: 0.5rem;                   // rounded-md = 8px
+      border-radius: 0.375rem;                 // rounded-md = 6px
       margin: 0 !important;
       background: transparent !important;
-      &:hover { background: #e6e6e6 !important; } // focus:bg-gray-100
+      &:hover, &:focus {
+        background: #f3f4f6 !important;        // focus:bg-gray-100
+      }
     }
   }
 
-  // Dropdown label: pixel-match DropdownMenuLabel text-xs font-medium text-muted-foreground
-  &__dropdown &__label,
-  .kkux-dropdown__label {
-    font-size: 0.75rem;                        // text-xs
-    font-weight: 500;                          // font-medium
-    color: #555;                               // text-muted-foreground ≈ gray-600
-    padding: 0.25rem 0.375rem;                 // py-1 px-1.5
-    font-family: inherit;
-  }
-
-  // Dropdown item: pixel-match DropdownMenuItem rounded-md px-1.5 py-1 text-sm
+  // Dropdown item: pixel-match marketing-site DropdownMenuItem
+  //   class="group/dropdown-menu-item focus:text-accent-foreground
+  //          not-data-[variant=destructive]:focus:**:text-accent-foreground
+  //          data-[variant=destructive]:text-destructive
+  //          data-[variant=destructive]:focus:bg-destructive/10
+  //          data-[variant=destructive]:focus:text-destructive
+  //          dark:data-[variant=destructive]:focus:bg-destructive/20
+  //          data-[variant=destructive]:*:[svg]:text-destructive
+  //          relative flex cursor-default items-center gap-1.5
+  //          rounded-md px-1.5 py-1 text-sm
+  //          outline-hidden select-none
+  //          focus:bg-gray-100
+  //          data-disabled:pointer-events-none data-disabled:opacity-50
+  //          [&_svg]:pointer-events-none [&_svg]:shrink-0
+  //          [&_svg:not([class*='size-'])]:size-4"
   .kkux-dropdown__item {
+    position: relative;
     display: flex;
     align-items: center;
-    font-size: 0.875rem;                       // text-sm
+    gap: 0.375rem;                             // gap-1.5
     padding: 0.25rem 0.375rem;                 // py-1 px-1.5
+    font-size: 0.875rem;                       // text-sm
     color: #010d09;                            // text-popover-foreground
+    background: transparent;
     text-decoration: none;
     font-family: inherit;
-    border-radius: 0.5rem;                     // rounded-md = 8px
+    border-radius: 0.375rem;                   // rounded-md = 6px
     margin: 0;
-    cursor: pointer;
+    cursor: default;                           // cursor-default (not pointer)
+    user-select: none;                         // select-none
+    outline: 2px solid transparent;            // outline-hidden
+    outline-offset: 2px;
 
-    &:hover {
-      background: #e6e6e6;                     // focus:bg-gray-100
+    // [&_svg]:pointer-events-none [&_svg]:shrink-0
+    // [&_svg:not([class*='size-'])]:size-4  → 16px
+    svg {
+      pointer-events: none;                   // [&_svg]:pointer-events-none
+      flex-shrink: 0;                          // [&_svg]:shrink-0
+      width: 1rem;                             // size-4 = 16px
+      height: 1rem;
+    }
+
+    // focus:bg-gray-100 → matches both keyboard focus and mouse hover
+    &:hover, &:focus {
+      background: #f3f4f6;                     // bg-gray-100 (Tailwind)
+    }
+
+    // data-disabled:pointer-events-none data-disabled:opacity-50
+    &[data-disabled], &--disabled {
+      pointer-events: none;
+      opacity: 0.5;
     }
 
     &--disabled {
       color: #999 !important;
-      cursor: default;
-      pointer-events: none;
-      &:hover { background: transparent; }
+      &:hover, &:focus { background: transparent; }
     }
 
     &--active {
@@ -251,12 +277,41 @@ $rounded-pill: 50rem  !default;
       font-weight: 500;
     }
 
-    &--destructive {
-      color: #d92d20 !important;
+    // data-[variant=destructive]:text-destructive
+    // data-[variant=destructive]:focus:bg-destructive/10
+    // data-[variant=destructive]:focus:text-destructive
+    // dark:data-[variant=destructive]:focus:bg-destructive/20
+    // data-[variant=destructive]:*:[svg]:text-destructive
+    //
+    // Marketing-site --destructive is oklch(0.577 0.245 27.325)
+    // which converts to ≈ #d92d20 (sRGB). The HTML marker
+    // `data-variant="destructive"` matches the marketing-site
+    // DropdownMenuItem attribute selector pattern.
+    //
+    // color: #d92d20 !important on the anchor + the descendant
+    // span + svg so the destructive red can never be shadowed by
+    // a lower-specificity parent rule (the .kkux-header__dropdown
+    // &__label rule below sets color: #555 on .kkux-dropdown__label,
+    // and the MFE has its own a { color: ... } upstream — pinning
+    // every level with !important here is intentional).
+    &[data-variant="destructive"], &--destructive {
+      color: #d92d20 !important;               // text-destructive (oklch(0.577 0.245 27.325))
 
-      &:hover {
-        background: rgba(217, 45, 32, 0.08);
+      span {
         color: #d92d20 !important;
+      }
+
+      &:hover, &:focus {
+        background: rgba(217, 45, 32, 0.1);    // bg-destructive/10
+        color: #d92d20 !important;
+
+        span {
+          color: #d92d20 !important;
+        }
+      }
+
+      svg {
+        color: #d92d20 !important;             // *:[svg]:text-destructive
       }
     }
   }
@@ -264,7 +319,7 @@ $rounded-pill: 50rem  !default;
   // Dropdown separator: pixel-match DropdownMenuSeparator bg-border h-px -mx-1 my-1
   .kkux-dropdown__separator {
     height: 1px;                               // h-px
-    background: #ccc;                          // bg-border ≈ gray-200
+    background: #e5e7eb;                       // bg-border (Tailwind gray-200)
     margin: 0.25rem -0.25rem;                  // my-1 -mx-1
   }
 
@@ -280,7 +335,7 @@ $rounded-pill: 50rem  !default;
 }
 
 // ============================================================
-// LearningHeader user dropdown (ghost style, matches Dashboard)
+// LearningHeader user dropdown (ghost style, matches the Account MFE)
 // ============================================================
 
 .kkux-user-dropdown {
@@ -322,15 +377,79 @@ $rounded-pill: 50rem  !default;
     padding: 0.25rem !important;               // p-1
     min-width: 8rem !important;                // min-w-32
     font-family: inherit;
+
+    // Pixel-match marketing-site DropdownMenuItem
+    //   class="group/dropdown-menu-item focus:text-accent-foreground
+    //          not-data-[variant=destructive]:focus:**:text-accent-foreground
+    //          data-[variant=destructive]:text-destructive
+    //          data-[variant=destructive]:focus:bg-destructive/10
+    //          data-[variant=destructive]:focus:text-destructive
+    //          dark:data-[variant=destructive]:focus:bg-destructive/20
+    //          data-[variant=destructive]:*:[svg]:text-destructive
+    //          relative flex cursor-default items-center gap-1.5
+    //          rounded-md px-1.5 py-1 text-sm outline-hidden select-none
+    //          focus:bg-gray-100
+    //          data-disabled:pointer-events-none data-disabled:opacity-50
+    //          [&_svg]:pointer-events-none [&_svg]:shrink-0
+    //          [&_svg:not([class*='size-'])]:size-4"
     .dropdown-item {
-      font-size: 0.875rem; padding: 0.25rem 0.375rem !important; // py-1 px-1.5
-      border-radius: 0.5rem; margin: 0; color: #010d09;
-      &:hover { background: #e6e6e6 !important; }
+      position: relative;
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.375rem !important;              // gap-1.5
+      padding: 0.25rem 0.375rem !important;   // py-1 px-1.5
+      font-size: 0.875rem;                    // text-sm
+      font-weight: 400;
+      color: #010d09 !important;
+      background: transparent !important;
+      text-decoration: none;
+      border-radius: 0.375rem !important;     // rounded-md = 6px
+      margin: 0;
+      cursor: pointer;                        // cursor-pointer (Bootstrap default — differs
+                                                //   from marketing site cursor-default; left
+                                                //   unchanged for backwards compat with the
+                                                //   existing learning-MFE dropdown UX)
+      user-select: none;
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      transition: background-color 0.15s;
+
+      svg, [class*='dropdown-icon'] {
+        pointer-events: none;
+        flex-shrink: 0;
+        width: 1rem;
+        height: 1rem;
+        color: #6C737F;
+      }
+
+      &:hover, &:focus {
+        background: #f3f4f6 !important;       // focus:bg-gray-100
+        color: #010d09 !important;
+      }
+
+      // data-[variant=destructive]:text-destructive
+      // data-[variant=destructive]:focus:bg-destructive/10
+      // data-[variant=destructive]:focus:text-destructive
+      // dark:data-[variant=destructive]:focus:bg-destructive/20
+      // data-[variant=destructive]:*:[svg]:text-destructive
+      //
+      // Marketing-site --destructive is oklch(0.577 0.245 27.325)
+      // which converts to ≈ #d92d20 (sRGB). The HTML marker
+      // `data-variant="destructive"` is emitted by
+      // LearningHeaderUserMenuItems.jsx on the destructive item.
+      &[data-variant="destructive"], &.pgn__dropdown-item-destructive {
+        color: #d92d20 !important;
+
+        &:hover, &:focus {
+          background: rgba(217, 45, 32, 0.1) !important;  // bg-destructive/10
+          color: #d92d20 !important;
+        }
+
+        svg, [class*='dropdown-icon'] {
+          color: #d92d20 !important;
+        }
+      }
     }
-  }
-  &__label {
-    font-size: 0.75rem; font-weight: 500; color: #555;
-    padding: 0.25rem 0.375rem; font-family: inherit; // py-1 px-1.5
   }
 }
 

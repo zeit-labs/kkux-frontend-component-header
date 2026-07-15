@@ -36,6 +36,49 @@ const LearningHeader = ({
     return intl.formatMessage(msg, values);
   };
 
+  // KKUx: mirror the marketing-site convention of routing apps-domain URLs
+  // (account, profile) by swapping the www. subdomain prefix for apps. on
+  // the marketing base URL. Matches openEdXPath(_, isMFE=true) in
+  // kkux-marketing-site/src/lib/paths.ts:96-105.
+  const marketingBase = (getConfig().MARKETING_SITE_BASE_URL || '').replace(/\/+$/, '');
+  const appsBase = marketingBase.replace(/^(https?:\/\/)www\./, '$1apps.');
+
+  // 3 groups / 5 items / 2 separators — matches kkux-marketing-site
+  // src/components/nav/user-section.tsx structure. The mobile menu
+  // (MobileHeader → DesktopHeaderSlot → DesktopHeader →
+  // DesktopUserMenuSlot → DesktopHeaderUserMenu) renders separators
+  // between consecutive groups automatically.
+  const username = authenticatedUser ? (authenticatedUser.name || authenticatedUser.username) : null;
+  const userMenu = !authenticatedUser ? [] : [
+    {
+      heading: null,
+      items: [
+        { type: 'item', href: `${getConfig().LMS_BASE_URL}/dashboard`, content: t(messages.myCourses) },
+        ...(getConfig().ORDER_HISTORY_URL || getConfig().KKUX_INVOICES_URL ? [{
+          type: 'item',
+          href: (() => {
+            const raw = getConfig().ORDER_HISTORY_URL || getConfig().KKUX_INVOICES_URL;
+            return raw.startsWith('http') ? raw : `${getConfig().LMS_BASE_URL.replace(/\/+$/, '')}${raw}`;
+          })(),
+          content: t(messages.orders),
+        }] : []),
+      ],
+    },
+    {
+      heading: null,
+      items: [
+        { type: 'item', href: `${appsBase}/account/`, content: t(messages.dashboard) },
+        { type: 'item', href: `${appsBase}/profile/u/${username}`, content: t(messages.profile) },
+      ],
+    },
+    {
+      heading: null,
+      items: [
+        { type: 'item', href: getConfig().LOGOUT_URL, content: t(messages.logout), variant: 'destructive' },
+      ],
+    },
+  ];
+
   return (
     <>
       <Responsive maxWidth={768}>
@@ -44,15 +87,9 @@ const LearningHeader = ({
           logoAltText={getConfig().SITE_NAME}
           logoDestination={getConfig().MARKETING_SITE_BASE_URL || `${getConfig().LMS_BASE_URL}/dashboard`}
           loggedIn={!!authenticatedUser}
-          username={authenticatedUser ? (authenticatedUser.name || authenticatedUser.username) : null}
+          username={username}
           mainMenu={[]}
-          userMenu={authenticatedUser ? [{
-            heading: authenticatedUser.name || authenticatedUser.username,
-            items: [
-              { type: 'item', href: `${getConfig().LMS_BASE_URL}/dashboard`, content: t(messages.myCourses) },
-              { type: 'item', href: getConfig().LOGOUT_URL, content: t(messages.logout), variant: 'destructive' },
-            ],
-          }] : []}
+          userMenu={userMenu}
           loggedOutItems={!authenticatedUser ? [
             { type: 'item', href: getConfig().LOGIN_URL, content: t(headerMessages['header.user.menu.login']) },
           ] : []}
@@ -83,7 +120,6 @@ const LearningHeader = ({
               {showUserDropdown && authenticatedUser && (
                 <>
                   <AuthenticatedUserDropdown
-                    username={authenticatedUser.name || authenticatedUser.username}
                     t={t}
                   />
                 </>

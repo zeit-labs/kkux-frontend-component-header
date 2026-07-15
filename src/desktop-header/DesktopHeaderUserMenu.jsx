@@ -19,6 +19,7 @@ const DesktopHeaderUserMenu = ({ menu }) => menu.map((group, index) => (
         }${
           variant === 'destructive' ? ' kkux-dropdown__item--destructive' : ''
         }`}
+        data-variant={variant || undefined}
         key={`${type}-${content}`}
         href={disabled ? undefined : href}
         onClick={disabled ? (e) => e.preventDefault() : onClick}
