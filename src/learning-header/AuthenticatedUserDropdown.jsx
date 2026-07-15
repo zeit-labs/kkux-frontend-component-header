@@ -30,7 +30,7 @@ const AuthenticatedUserDropdown = ({ t }) => {
     { message: t(messages.myCourses), href: `${config.LMS_BASE_URL.replace(/\/+$/, '')}/dashboard` },
     ...(invoiceUrl ? [{ message: t(messages.orders), href: invoiceUrl }] : []),
     { separator: true },
-    // Group 2: Dashboard, Profile
+    // Group 2: Account, Profile
     { message: t(messages.dashboard), href: `${appsBase}/account/` },
     { message: t(messages.profile), href: `${appsBase}/profile/u/${username}` },
     { separator: true },
